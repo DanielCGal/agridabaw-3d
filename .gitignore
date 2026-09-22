@@ -1,0 +1,7 @@
+# Never commit the game build here - it is 391 MB, far over GitHub's 100 MB file limit.
+# The APK ships as a GitHub Release asset instead.
+*.apk
+
+# OS cruft
+Thumbs.db
+.DS_Store
