@@ -35,6 +35,16 @@
   /* ---------- Scroll reveal ---------- */
   var revealables = document.querySelectorAll('.reveal');
 
+  /* Shows everything that is already on screen. The observer below normally
+     does this, but it only runs while the page is being painted, so a tab that
+     opens in the background or a browser that throttles the callback could
+     otherwise leave the first screenful blank. */
+  function revealInView() {
+    Array.prototype.forEach.call(revealables, function (el) {
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-in');
+    });
+  }
+
   if (reduceMotion || !('IntersectionObserver' in window)) {
     revealables.forEach(function (el) { el.classList.add('is-in'); });
   } else {
@@ -52,6 +62,8 @@
       el.style.transitionDelay = Math.min(siblingIndex, 5) * 70 + 'ms';
       revealObserver.observe(el);
     });
+
+    window.addEventListener('load', revealInView);
   }
 
   /* ---------- Active section in the nav ---------- */
@@ -73,6 +85,32 @@
     }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
 
     sections.forEach(function (s) { sectionObserver.observe(s); });
+  }
+
+  /* ---------- Deep links ---------- */
+  /* A page opened straight at a fragment - the shared #about link, for example -
+     can stay at the top, because Chrome makes the jump while the images further
+     down are still loading and the root scrolls smoothly. Re-aim at the target
+     once the page has finished loading, but only if nothing scrolled at all, so
+     a reader who has already moved is never yanked back. */
+  if (location.hash.length > 1) {
+    var deepTarget = null;
+    try { deepTarget = document.querySelector(location.hash); } catch (err) { deepTarget = null; }
+
+    if (deepTarget) {
+      window.addEventListener('load', function () {
+        if (window.scrollY < 4) {
+          // Land on the section rather than animating the whole page past every
+          // other one, which is what the smooth root scrolling would otherwise do.
+          var root = document.documentElement;
+          var previous = root.style.scrollBehavior;
+          root.style.scrollBehavior = 'auto';
+          deepTarget.scrollIntoView();
+          root.style.scrollBehavior = previous;
+        }
+        setTimeout(revealInView, 0);
+      });
+    }
   }
 
   /* ---------- Screenshot lightbox ---------- */

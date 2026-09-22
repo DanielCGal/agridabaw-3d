@@ -329,10 +329,13 @@ p.lead.on-dark{color:var(--cream)}
 .lightbox__close:hover{color:var(--gold)}
 
 /* ---------------- Scroll reveal ---------------- */
-.reveal{opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease}
+/* Only a scripted page hides anything: .js is set by an inline script in the
+   head. Without it every section stays visible, so a blocked or failed
+   main.js can never leave the page blank. */
+.js .reveal{opacity:0; transform:translateY(22px); transition:opacity .6s ease, transform .6s ease}
 .reveal.is-in{opacity:1; transform:none}
 @media (prefers-reduced-motion:reduce){
-  .reveal{opacity:1; transform:none; transition:none}
+  .js .reveal{opacity:1; transform:none; transition:none}
 }
 
 /* ============================================================
@@ -362,9 +365,9 @@ p.lead.on-dark{color:var(--cream)}
 @media (max-width:768px){
   body{font-size:16px}
 
-  .nav__toggle{display:flex}
+  .js .nav__toggle{display:flex}
   .nav__inner{position:relative}
-  .nav__menu{
+  .js .nav__menu{
     position:absolute; top:100%; left:0; right:0;
     flex-direction:column; align-items:stretch; gap:0;
     background:var(--wood-deep); border-top:2px solid rgba(242,181,68,.3);
@@ -378,6 +381,13 @@ p.lead.on-dark{color:var(--cream)}
   /* width:auto so the button's own side margins are honoured rather than
      added on top of a 100% width, which pushed it past the clipped menu edge. */
   .nav__menu .btn{margin:14px var(--gutter) 18px; justify-content:center; width:auto}
+
+  /* No script means no hamburger, so lay the links out as a wrapped row
+     instead of leaving a dead button above a menu that cannot open. */
+  html:not(.js) .nav__inner{flex-wrap:wrap; justify-content:center}
+  html:not(.js) .nav__menu{flex-wrap:wrap; justify-content:center; gap:8px 18px; width:100%}
+  html:not(.js) .nav__menu a{padding:6px 0}
+  html:not(.js) .nav__menu .btn{margin:4px 0; padding:9px 18px}
 
   .grid{gap:18px}
   .grid--3{grid-template-columns:1fr}

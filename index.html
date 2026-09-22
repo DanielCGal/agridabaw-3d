@@ -11,7 +11,12 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="AgriDabaw-3D — A Simulation Game with AI-Advisor for Localized Farming Techniques">
 <meta property="og:description" content="Learn farming, connect with others, think critically, and experience agriculture — all in one interactive 3D world set in Davao City.">
-<meta property="og:image" content="assets/img/bg-hero.jpg">
+<meta property="og:url" content="https://danielcgal.github.io/agridabaw-3d/">
+<meta property="og:site_name" content="AgriDabaw-3D">
+<!-- Absolute, because Facebook, Messenger and X fetch this URL on their own
+     servers and cannot resolve a path relative to the page. -->
+<meta property="og:image" content="https://danielcgal.github.io/agridabaw-3d/assets/img/bg-hero.jpg">
+<meta property="og:image:alt" content="A painted Davao farm landscape with Mount Apo behind it">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="assets/img/app-icon.png" type="image/png">
@@ -21,6 +26,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/styles.css">
+
+<!-- Marks the page as scripted. The scroll-reveal animation and the phone menu
+     only hide anything once this class is set, so if the script never loads the
+     page still shows all of its content. -->
+<script>document.documentElement.className += ' js';</script>
 </head>
 <body>
 
@@ -81,7 +91,7 @@
   <div class="stats__inner">
     <div class="stat"><span class="stat__n">7</span><span class="stat__l">Davao districts</span></div>
     <div class="stat"><span class="stat__n">13</span><span class="stat__l">Crops to grow</span></div>
-    <div class="stat"><span class="stat__n">28</span><span class="stat__l">Pests &amp; diseases</span></div>
+    <div class="stat"><span class="stat__n">30</span><span class="stat__l">Pests &amp; diseases</span></div>
     <div class="stat"><span class="stat__n">AI</span><span class="stat__l">Farming advisor</span></div>
     <div class="stat"><span class="stat__n">2</span><span class="stat__l">Climate events</span></div>
   </div>
@@ -95,7 +105,7 @@
       <h2>An interactive 3D farm you can actually learn from.</h2>
       <p>AgriDabaw-3D is an interactive 3D farming simulation game made for everyone — whether you are a student, a gamer, or simply curious about agriculture. Learn the basics of farming, discover how crops grow, and experience how farmers make decisions to keep their farms productive.</p>
       <p>Plant and manage crops, maintain your farm, respond to climate events, pests, and diseases, and make informed farming decisions in a safe and engaging virtual environment. With the AI Advisor, players receive agricultural guidance and situation-based tasks while learning through gameplay.</p>
-      <p>The multiplayer chatbox encourages communication and collaboration with other players, while the trading feature develops critical thinking and decision-making as players manage resources and negotiate exchanges.</p>
+      <p>Search for other players, add them as friends, and the in-game chat opens between you — encouraging communication and collaboration. The trading feature develops critical thinking and decision-making as players manage resources and negotiate exchanges: both players must be online, and both must confirm before anything changes hands.</p>
     </div>
     <div class="split__media reveal">
       <img src="assets/img/shot-mainmenu.jpg" alt="The AgriDabaw-3D main menu over a painted Davao landscape with Mount Apo" width="1013" height="570" loading="lazy">
@@ -115,7 +125,7 @@
   <ul class="grid grid--3 cards">
     <li class="card reveal"><span class="card__num">01</span><h3>Limited practical resources</h3><p>Learners have unequal access to facilities and materials for hands-on agricultural learning.</p></li>
     <li class="card reveal"><span class="card__num">02</span><h3>Passive learning</h3><p>Traditional approaches may limit active exploration, interaction, and immediate feedback.</p></li>
-    <li class="card reveal"><span class="card__num">03</span><h3>Limited risk-scenario exposure</h3><p>Learners have few opportunities to repeatedly experience and respond to drought, flooding, typhoons, and other agricultural risks.</p></li>
+    <li class="card reveal"><span class="card__num">03</span><h3>Limited risk-scenario exposure</h3><p>Learners have few opportunities to repeatedly experience and respond to typhoons, drought, pest outbreaks, crop disease, and other agricultural risks.</p></li>
     <li class="card reveal"><span class="card__num">04</span><h3>Limited localized context</h3><p>General agricultural knowledge may not sufficiently reflect Davao City's crops, soil, and climate conditions.</p></li>
     <li class="card reveal"><span class="card__num">05</span><h3>Limited repeated practice</h3><p>Real-world farming requires land, resources, time, and suitable growing conditions, making repeated experimentation difficult.</p></li>
   </ul>
@@ -138,8 +148,8 @@
     <li class="card reveal"><span class="card__icon" style="--ic:#8B5A2B" aria-hidden="true">🐛</span><h3>Manage Pests and Diseases</h3><p>Identify crop problems and apply appropriate management actions to keep your crops healthy.</p></li>
     <li class="card reveal"><span class="card__icon" style="--ic:#2E5A29" aria-hidden="true">🤖</span><h3>Learn with the AI Advisor</h3><p>Ask farming questions and receive AI-assisted guidance and farming tasks based on your situation.</p></li>
     <li class="card reveal"><span class="card__icon" style="--ic:#F2B544" aria-hidden="true">🧠</span><h3>Make Farming Decisions</h3><p>Try different approaches, observe their effects, and develop practical decision-making skills.</p></li>
-    <li class="card reveal"><span class="card__icon" style="--ic:#E0921F" aria-hidden="true">🛒</span><h3>Buy, Sell, and Trade</h3><p>Manage resources, sell harvested crops, and trade with other players to develop critical thinking and resource-management skills.</p></li>
-    <li class="card reveal"><span class="card__icon" style="--ic:#7FB3D5" aria-hidden="true">💬</span><h3>Connect Through Multiplayer</h3><p>Use the multiplayer chatbox to communicate, interact, and collaborate with other players.</p></li>
+    <li class="card reveal"><span class="card__icon" style="--ic:#E0921F" aria-hidden="true">🛒</span><h3>Buy, Sell, and Trade</h3><p>Manage resources, sell harvested crops at the shop, list items on the player marketplace, and trade with other players to develop critical thinking and resource-management skills.</p></li>
+    <li class="card reveal"><span class="card__icon" style="--ic:#7FB3D5" aria-hidden="true">💬</span><h3>Connect Through Multiplayer</h3><p>Search for players, send friend requests, and chat with the friends you add to communicate, interact, and collaborate.</p></li>
     <li class="card reveal"><span class="card__icon" style="--ic:#4C7F3E" aria-hidden="true">🎯</span><h3>Complete Farming Objectives</h3><p>Take on farming tasks, track your progress, and work toward your goals.</p></li>
   </ul>
 </section>
@@ -193,7 +203,7 @@
       </figure>
       <figure class="shot reveal">
         <img src="assets/img/shot-pest.jpg" alt="A pest and disease event alert reporting Coconut Brontispa on a coconut crop with its current severity" width="1016" height="565" loading="lazy">
-        <figcaption><strong>Pests &amp; diseases</strong> Twenty-eight Davao pests and diseases, each with its own severity curve and its own correct treatment.</figcaption>
+        <figcaption><strong>Pests &amp; diseases</strong> Thirty Davao pests and diseases across forty-seven crop-specific cases, each with its own season, its own severity curve and its own correct treatment.</figcaption>
       </figure>
     </div>
   </div>
@@ -234,7 +244,7 @@
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-harvest.jpg" alt="A mature coconut tree with its crop information panel showing health, stress and water" width="1013" height="567" loading="lazy"><span>Grow to maturity</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-trade.jpg" alt="The trading screen with two players' offers and a money field" width="1007" height="559" loading="lazy"><span>Trade with players</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-market.jpg" alt="The player marketplace with an active listing for a mulch bag" width="1010" height="563" loading="lazy"><span>Player marketplace</span></button></li>
-    <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-chat.jpg" alt="The multiplayer chat window with messages exchanged between two players" width="1012" height="573" loading="lazy"><span>Multiplayer chat</span></button></li>
+    <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-chat.jpg" alt="The in-game chat window with messages exchanged between two friends" width="1012" height="573" loading="lazy"><span>Chat with friends</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-shop.jpg" alt="The in-game shop after buying seeds and tools" width="1013" height="566" loading="lazy"><span>Buy seeds and tools</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-mainmenu.jpg" alt="The AgriDabaw-3D main menu over a painted Davao landscape" width="1013" height="570" loading="lazy"><span>Main menu</span></button></li>
   </ul>
@@ -260,7 +270,7 @@
       <div><dt>Device</dt><dd>Android phone or tablet</dd></div>
       <div><dt>Android version</dt><dd>Android 8.0 or newer</dd></div>
       <div><dt>Download size</dt><dd>About 391 MB</dd></div>
-      <div><dt>Internet</dt><dd>Required — accounts, AI Advisor, chat, marketplace and trading</dd></div>
+      <div><dt>Internet</dt><dd>Required — your account, saving your farm, the AI Advisor, chat, marketplace and trading</dd></div>
     </dl>
   </div>
 

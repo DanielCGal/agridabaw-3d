@@ -55,13 +55,21 @@ image payload from 13.9 MB down to 2.3 MB.
 | Breakpoint | Behaviour |
 |---|---|
 | ≥ 1025px | Two-column hero and split sections, three-column card grids, five-across stats |
-| 769–1024px | Two-column card grids, three-across stats, stacked hero |
+| 901–1024px | Two-column card grids, three-across stats, hero still side by side |
+| 769–900px | Stacked hero, single-column split sections and showcase |
 | ≤ 768px | Single column throughout, hamburger navigation, two-column gallery |
 | ≤ 480px | Single-column gallery, full-width buttons |
 
 The page also respects `prefers-reduced-motion`, has a skip link, visible focus
 rings, alt text on every image, and a keyboard-navigable screenshot lightbox
 (arrow keys to move, Escape to close).
+
+Nothing is hidden unless the page is scripted: an inline script in the head adds
+a `js` class, and only that class turns on the scroll-reveal animation and the
+collapsed phone menu. If `main.js` is blocked or fails to load, every section is
+still visible and the navigation links still work. A link that carries a
+fragment, such as `#about`, is re-aimed at its section once the page has
+finished loading, because the browser can otherwise leave it at the top.
 
 ## The game download
 
