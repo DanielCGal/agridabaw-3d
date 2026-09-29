@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=9">
+<link rel="stylesheet" href="assets/css/styles.css?v=10">
 
 <!-- Marks the page as scripted. The scroll-reveal animation and the phone menu
      only hide anything once this class is set, so if the script never loads the
@@ -54,6 +54,7 @@
       <a href="#districts">Districts</a>
       <a href="#audience">Who It's For</a>
       <a href="#gallery">Gallery</a>
+      <a href="#reviews">Reviews</a>
       <a class="btn btn--gold btn--sm" href="#download">Get the Game</a>
     </nav>
   </div>
@@ -324,10 +325,17 @@
       <form class="rv-form" id="rvForm" novalidate>
         <p class="rv-required reveal">* Indicates required question</p>
 
+        <div class="rv-card rv-q reveal" id="rvNameQ">
+          <label class="rv-q__label" for="rvName">Your name&nbsp;<span class="rv-ask" aria-hidden="true">*</span></label>
+          <input class="rv-input" id="rvName" name="reviewerName" type="text" maxlength="60" autocomplete="nickname" placeholder="Your answer" required aria-describedby="rvNameHint rvNameError">
+          <p class="rv-hint" id="rvNameHint">Shown with your review. A first name or nickname is fine.</p>
+          <p class="rv-error" id="rvNameError" hidden></p>
+        </div>
+
         <fieldset class="rv-card rv-q reveal" id="rvRatingQ" aria-describedby="rvRatingError">
           <legend class="rv-q__legend">How would you rate <span class="rv-nowrap">AgriDabaw-3D?</span>&nbsp;<span class="rv-ask" aria-hidden="true">*</span></legend>
           <div class="rv-rate" id="rvRate">
-            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">1</span><input type="radio" name="rating" value="1"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">1 star</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">1</span><input type="radio" name="rating" value="1" required><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">1 star</span></label>
             <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">2</span><input type="radio" name="rating" value="2"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">2 stars</span></label>
             <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">3</span><input type="radio" name="rating" value="3"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">3 stars</span></label>
             <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">4</span><input type="radio" name="rating" value="4"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">4 stars</span></label>
@@ -338,7 +346,7 @@
 
         <div class="rv-card rv-q reveal" id="rvCommentQ">
           <label class="rv-q__label" for="rvComment">What did you like about <span class="rv-nowrap">AgriDabaw-3D,</span> and what improvements or suggestions would you recommend?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></label>
-          <textarea class="rv-text" id="rvComment" name="comment" rows="4" maxlength="1000" placeholder="Your answer" aria-describedby="rvCommentError rvCounter"></textarea>
+          <textarea class="rv-text" id="rvComment" name="comment" rows="4" maxlength="1000" placeholder="Your answer" required aria-describedby="rvCommentError rvCounter"></textarea>
           <div class="rv-q__foot">
             <p class="rv-error" id="rvCommentError" hidden></p>
             <span class="rv-counter" id="rvCounter">0 / 1000</span>
@@ -352,7 +360,7 @@
 
         <div class="rv-submit reveal">
           <button class="btn btn--gold" type="submit" id="rvSubmit">Submit</button>
-          <p class="rv-note">Reviews are public and anonymous. Please don't include personal information.</p>
+          <p class="rv-note">Reviews are shown publicly. Please don't include personal information such as a phone number or address.</p>
         </div>
         <p class="rv-status" id="rvStatus" role="status" aria-live="polite"></p>
       </form>
@@ -413,6 +421,6 @@
 </div>
 
 <script src="assets/js/main.js"></script>
-<script src="assets/js/reviews.js?v=9"></script>
+<script src="assets/js/reviews.js?v=10"></script>
 </body>
 </html>

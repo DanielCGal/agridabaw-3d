@@ -91,8 +91,11 @@ p{margin:0}
   background:var(--wood-deep);
   box-shadow:0 2px 14px rgba(0,0,0,.22);
 }
+/* As wide as the sections' content, not narrower: with eight links the row
+   needs that room, and on wide screens the gutter would otherwise squeeze
+   the menu into wrapping. */
 .nav__inner{
-  max-width:var(--maxw); margin:0 auto;
+  max-width:calc(var(--maxw) + 2 * var(--gutter)); margin:0 auto;
   padding:14px var(--gutter);
   display:flex; align-items:center; justify-content:space-between; gap:20px;
 }
@@ -428,14 +431,20 @@ html:not(.js) .rv-feed{display:none}
 .rv-rate .rv-star{width:clamp(30px,3.6vw,38px); height:clamp(30px,3.6vw,38px); transition:transform .15s}
 .rv-rate__opt:hover .rv-star{transform:scale(1.08)}
 
-.rv-text{
-  display:block; width:100%; min-height:120px; margin-top:14px; resize:vertical;
+.rv-text,
+.rv-input{
+  display:block; width:100%; margin-top:14px;
   padding:12px 14px; font:inherit; font-size:16px; line-height:1.6; color:var(--ink);
   background:var(--paper); border:0; border-bottom:2px solid rgba(139,90,43,.45);
   border-radius:10px 10px 0 0;
 }
-.rv-text::placeholder{color:#7D6547; opacity:1}
-.rv-text:focus{outline:none; border-bottom-color:var(--gold-deep); box-shadow:0 2px 0 var(--gold-deep)}
+.rv-text{min-height:120px; resize:vertical}
+.rv-input{max-width:440px}
+.rv-text::placeholder,
+.rv-input::placeholder{color:#7D6547; opacity:1}
+.rv-text:focus,
+.rv-input:focus{outline:none; border-bottom-color:var(--gold-deep); box-shadow:0 2px 0 var(--gold-deep)}
+.rv-hint{margin-top:8px; font-size:14px; color:var(--mute)}
 .rv-q__foot{display:flex; align-items:flex-start; gap:12px}
 .rv-counter{margin:10px 0 0 auto; font-size:13px; color:var(--mute); font-variant-numeric:tabular-nums}
 .rv-counter.is-near{color:var(--error)}
@@ -468,6 +477,9 @@ html:not(.js) .rv-feed{display:none}
 .rv-item.is-new{animation:rv-new 2.4s ease}
 @keyframes rv-new{from{background:#FFF1CF; border-color:var(--gold)}}
 .rv-item__head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.rv-item__who{display:flex; align-items:center; gap:6px 12px; flex-wrap:wrap; min-width:0}
+.rv-item__name{font-weight:700; color:var(--wood-deep); overflow-wrap:anywhere}
+.rv-item__name.is-anon{font-weight:600; color:var(--mute)}
 .rv-item__stars{display:inline-flex; gap:3px}
 .rv-item__stars .rv-star{width:18px; height:18px}
 .rv-item__date{font-size:14px; color:var(--mute)}
@@ -493,11 +505,47 @@ html:not(.js) .rv-feed{display:none}
 /* ============================================================
    Tablet
    ============================================================ */
+/* The name beside the logo repeats the logo's own lettering, so it is the
+   first thing to go when the menu needs the room. */
+@media (max-width:1240px){
+  .nav__brand span{display:none}
+}
+
 @media (max-width:1024px){
   .grid--3{grid-template-columns:repeat(2,1fr)}
   .stats__inner{grid-template-columns:repeat(3,1fr); gap:26px}
   .req dl{grid-template-columns:repeat(2,1fr)}
-  .nav__brand span{display:none}
+}
+
+/* ============================================================
+   Collapsed navigation
+   ============================================================ */
+/* Below 960px the eight links no longer fit on one line, so the menu folds
+   into the hamburger here rather than only on phones. */
+@media (max-width:960px){
+  .js .nav__toggle{display:flex}
+  .nav__inner{position:relative}
+  .js .nav__menu{
+    position:absolute; top:100%; left:0; right:0;
+    flex-direction:column; align-items:stretch; gap:0;
+    background:var(--wood-deep); border-top:2px solid rgba(242,181,68,.3);
+    box-shadow:0 14px 26px rgba(0,0,0,.35);
+    max-height:0; overflow:hidden; transition:max-height .3s ease;
+  }
+  .nav__menu.is-open{max-height:560px}
+  .nav__menu a{padding:15px var(--gutter); border-bottom:1px solid rgba(247,235,211,.12)}
+  .nav__menu a:not(.btn):hover,
+  .nav__menu a:not(.btn).is-active{border-bottom-color:rgba(247,235,211,.12); background:rgba(242,181,68,.12)}
+  /* width:auto so the button's own side margins are honoured rather than
+     added on top of a 100% width, which pushed it past the clipped menu edge. */
+  .nav__menu .btn{margin:14px var(--gutter) 18px; justify-content:center; width:auto}
+
+  /* No script means no hamburger, so lay the links out as a wrapped row
+     instead of leaving a dead button above a menu that cannot open. */
+  html:not(.js) .nav__inner{flex-wrap:wrap; justify-content:center}
+  html:not(.js) .nav__menu{flex-wrap:wrap; justify-content:center; gap:8px 18px; width:100%}
+  html:not(.js) .nav__menu a{padding:6px 0}
+  html:not(.js) .nav__menu .btn{margin:4px 0; padding:9px 18px}
 }
 
 @media (max-width:900px){
@@ -518,30 +566,6 @@ html:not(.js) .rv-feed{display:none}
    ============================================================ */
 @media (max-width:768px){
   body{font-size:16px}
-
-  .js .nav__toggle{display:flex}
-  .nav__inner{position:relative}
-  .js .nav__menu{
-    position:absolute; top:100%; left:0; right:0;
-    flex-direction:column; align-items:stretch; gap:0;
-    background:var(--wood-deep); border-top:2px solid rgba(242,181,68,.3);
-    box-shadow:0 14px 26px rgba(0,0,0,.35);
-    max-height:0; overflow:hidden; transition:max-height .3s ease;
-  }
-  .nav__menu.is-open{max-height:520px}
-  .nav__menu a{padding:15px var(--gutter); border-bottom:1px solid rgba(247,235,211,.12)}
-  .nav__menu a:not(.btn):hover,
-  .nav__menu a:not(.btn).is-active{border-bottom-color:rgba(247,235,211,.12); background:rgba(242,181,68,.12)}
-  /* width:auto so the button's own side margins are honoured rather than
-     added on top of a 100% width, which pushed it past the clipped menu edge. */
-  .nav__menu .btn{margin:14px var(--gutter) 18px; justify-content:center; width:auto}
-
-  /* No script means no hamburger, so lay the links out as a wrapped row
-     instead of leaving a dead button above a menu that cannot open. */
-  html:not(.js) .nav__inner{flex-wrap:wrap; justify-content:center}
-  html:not(.js) .nav__menu{flex-wrap:wrap; justify-content:center; gap:8px 18px; width:100%}
-  html:not(.js) .nav__menu a{padding:6px 0}
-  html:not(.js) .nav__menu .btn{margin:4px 0; padding:9px 18px}
 
   .grid{gap:18px}
   .grid--3{grid-template-columns:1fr}

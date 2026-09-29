@@ -55,10 +55,12 @@ image payload from 13.9 MB down to 2.3 MB.
 
 | Breakpoint | Behaviour |
 |---|---|
+| ≥ 1241px | The name "AgriDabaw-3D" shows beside the logo in the top menu |
 | ≥ 1025px | Two-column hero and split sections, three-column card grids, five-across stats |
 | 901–1024px | Two-column card grids, three-across stats, hero still side by side |
+| ≤ 960px | Hamburger navigation (eight menu items no longer fit on one line) |
 | 769–900px | Stacked hero, single-column split sections and showcase |
-| ≤ 768px | Single column throughout, hamburger navigation, two-column gallery |
+| ≤ 768px | Single column throughout, two-column gallery |
 | ≤ 480px | Single-column gallery, full-width buttons |
 
 The page also respects `prefers-reduced-motion`, has a skip link, visible focus
@@ -74,19 +76,21 @@ finished loading, because the browser can otherwise leave it at the top.
 
 ## Ratings and reviews
 
-Below the download section, visitors rate the game from 1 to 5 stars and answer
-"What did you like about AgriDabaw-3D, and what improvements or suggestions would
-you recommend?", the same two questions as the feedback form. The section shows
-the average rating, a bar for each star level, and every comment, newest first,
-ten at a time.
+Below the download section, visitors give their name, rate the game from 1 to 5
+stars and answer "What did you like about AgriDabaw-3D, and what improvements or
+suggestions would you recommend?", the same questions as the feedback form. The
+section shows the average rating, a bar for each star level, and every comment
+with its reviewer's name, newest first, ten at a time. Reviews sent before the
+name was asked for show as "Anonymous". The top menu's **Reviews** link jumps to
+the section.
 
 The reviews are stored by the game's own server (`agridabao-api` on Railway), whose
 address is in the section's `data-api` attribute:
 
 - `GET /api/reviews?page=0&size=10` returns the overall rating and a page of reviews.
-- `POST /api/reviews` with `{ "rating": 5, "comment": "..." }` adds one.
+- `POST /api/reviews` with `{ "name": "Juan", "rating": 5, "comment": "..." }` adds one.
 
-Reviews are anonymous and need no account. The server only accepts them from this
+Reviews need no account; the name is whatever the reviewer types. The server only accepts them from this
 website's address, limits how many can be sent in an hour, and turns away bots
 through a hidden form field. Comments are shown as plain text, never as HTML.
 

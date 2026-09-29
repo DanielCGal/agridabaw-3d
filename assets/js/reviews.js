@@ -30,6 +30,9 @@
   var summaryCard = section.querySelector('.rv-summary');
 
   var form = document.getElementById('rvForm');
+  var nameInput = document.getElementById('rvName');
+  var nameQ = document.getElementById('rvNameQ');
+  var nameError = document.getElementById('rvNameError');
   var rate = document.getElementById('rvRate');
   var options = Array.prototype.slice.call(rate.querySelectorAll('.rv-rate__opt'));
   var ratingQ = document.getElementById('rvRatingQ');
@@ -183,12 +186,22 @@
     var head = document.createElement('div');
     head.className = 'rv-item__head';
 
+    /* Reviews sent before names were asked for have none. */
+    var who = document.createElement('div');
+    who.className = 'rv-item__who';
+
+    var name = document.createElement('span');
+    name.className = review.name ? 'rv-item__name' : 'rv-item__name is-anon';
+    name.textContent = review.name || 'Anonymous';
+    who.appendChild(name);
+
     var stars = document.createElement('span');
     stars.className = 'rv-item__stars';
     stars.setAttribute('role', 'img');
     stars.setAttribute('aria-label', 'Rated ' + review.rating + ' out of 5');
     for (var i = 1; i <= 5; i++) stars.appendChild(starIcon(i <= review.rating));
-    head.appendChild(stars);
+    who.appendChild(stars);
+    head.appendChild(who);
 
     var written = new Date(review.createdAt);
     if (!isNaN(written.getTime())) {
@@ -326,16 +339,29 @@
     }
   });
 
+  nameInput.addEventListener('input', function () {
+    if (nameInput.value.trim()) {
+      nameInput.removeAttribute('aria-invalid');
+      clearError(nameQ, nameError);
+    }
+  });
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     if (sending) return;
 
+    var who = nameInput.value.trim();
     var text = comment.value.trim();
     var firstProblem = null;
 
+    if (!who) {
+      showError(nameQ, nameError, REQUIRED);
+      nameInput.setAttribute('aria-invalid', 'true');
+      firstProblem = nameInput;
+    }
     if (!selected) {
       showError(ratingQ, ratingError, REQUIRED);
-      firstProblem = rate.querySelector('input');
+      firstProblem = firstProblem || rate.querySelector('input');
     }
     if (!text) {
       showError(commentQ, commentError, REQUIRED);
@@ -354,6 +380,7 @@
     setStatus('');
 
     request('/api/reviews', {
+      name: who,
       rating: selected,
       comment: text,
       website: form.elements.website.value
@@ -371,7 +398,8 @@
       })
       .catch(function (error) {
         var fields = error.fields || {};
-        if (error.status === 400 && (fields.rating || fields.comment)) {
+        if (error.status === 400 && (fields.name || fields.rating || fields.comment)) {
+          if (fields.name) showError(nameQ, nameError, fields.name);
           if (fields.rating) showError(ratingQ, ratingError, fields.rating);
           if (fields.comment) showError(commentQ, commentError, fields.comment);
         } else if (error.status === 400 || error.status === 429) {
@@ -391,8 +419,7 @@
     thanks.hidden = true;
     form.hidden = false;
     setStatus('');
-    var first = rate.querySelector('input');
-    if (first) first.focus();
+    nameInput.focus();
   });
 
   updateCounter();
