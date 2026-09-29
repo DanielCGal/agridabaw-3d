@@ -18,6 +18,7 @@
   --paper:#FFF8EA;
   --white:#FFFFFF;
   --mute:#6B5334;
+  --error:#B3261E;
 
   --display:"Playpen Sans", "Comic Sans MS", system-ui, sans-serif;
   --body:"Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -76,8 +77,12 @@ p{margin:0}
 .btn--gold:hover{background:#ffc75c; transform:translateY(-2px); box-shadow:var(--shadow-lg)}
 .btn--ghost{background:rgba(255,255,255,.14); color:var(--cream); border-color:rgba(247,235,211,.55)}
 .btn--ghost:hover{background:rgba(255,255,255,.24); transform:translateY(-2px)}
+.btn--line{background:transparent; color:var(--wood-deep); border-color:rgba(139,90,43,.55)}
+.btn--line:hover{background:rgba(242,181,68,.18); transform:translateY(-2px)}
 .btn--sm{font-size:16px; padding:11px 20px; border-radius:12px}
 .btn--lg{font-size:clamp(18px,2vw,22px); padding:22px 44px}
+.btn:disabled{opacity:.6; cursor:wait; transform:none}
+.btn[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){ .btn:hover{transform:none} }
 
 /* ---------------- Nav ---------------- */
@@ -328,6 +333,153 @@ p.lead.on-dark{color:var(--cream)}
 .lightbox__nav:hover{background:rgba(247,235,211,.26)}
 .lightbox__close:hover{color:var(--gold)}
 
+/* ---------------- Ratings and reviews ---------------- */
+.sr-only{
+  position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+.rv-sprite{position:absolute; width:0; height:0; overflow:hidden}
+
+/* The whole section runs on reviews.js, so without script it shows only the
+   <noscript> line instead of an empty rating and a form that cannot send. */
+html:not(.js) .rv-layout,
+html:not(.js) .rv-feed{display:none}
+.rv-noscript{text-align:center; color:var(--mute)}
+
+.rv-layout{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:26px; align-items:start}
+.rv-card{
+  background:var(--white); border:2px solid rgba(201,151,90,.45);
+  border-radius:var(--radius); padding:30px; box-shadow:var(--shadow);
+}
+
+/* Stars: outlined when empty, gold with a deeper gold edge when on. */
+.rv-star{
+  display:inline-block; width:24px; height:24px; flex-shrink:0;
+  fill:none; stroke:var(--wood-mid); stroke-width:1.6; stroke-linejoin:round;
+}
+.rv-star.is-on,
+.is-on > .rv-star,
+.rv-avgstars__row--fill .rv-star{fill:var(--gold); stroke:#C27A12}
+
+/* Overall rating: the average, then one bar per star level. */
+/* Sticky beside the form on wide screens, so the rating stays in view while
+   the form is filled in; static once the two stack. */
+.rv-summary{position:sticky; top:100px; display:flex; flex-direction:column; gap:22px}
+.rv-summary h3{font-size:22px}
+.rv-score{display:flex; align-items:center; gap:20px}
+.rv-score__n{font-family:var(--display); font-weight:800; font-size:clamp(52px,6vw,64px); line-height:1; color:var(--wood-deep)}
+.rv-score__n.is-empty{color:#A87F4F}
+.rv-score__meta{display:flex; flex-direction:column; gap:8px}
+.rv-score__count{font-size:15px; color:var(--mute)}
+
+.rv-avgstars{position:relative; display:inline-flex; align-self:flex-start}
+.rv-avgstars__row{display:flex; gap:4px}
+.rv-avgstars__row--fill{position:absolute; top:0; bottom:0; left:0; width:var(--fill,0%); overflow:hidden}
+
+.rv-bars{width:100%; border-collapse:collapse}
+.rv-bar > *{padding:6px 0; vertical-align:middle; transition:background .15s}
+.rv-bar{cursor:default; outline:none}
+.rv-bar__label{
+  width:46px; text-align:left; white-space:nowrap;
+  font-weight:700; font-size:15px; color:var(--wood-deep);
+}
+.rv-bar__label .rv-star{width:15px; height:15px; margin-left:4px; vertical-align:-2px}
+.rv-bar > .rv-bar__plot{padding-inline:4px 14px}
+/* Bars grow from a square baseline to a 4px rounded end, on a track one
+   step lighter in the same gold. #C27A12 clears 3:1 against the white card. */
+.rv-bar__track{display:block; height:12px; border-radius:0 4px 4px 0; background:#FBEBCB}
+.rv-bar__fill{display:block; width:0; height:100%; border-radius:0 4px 4px 0; background:#C27A12; transition:width .7s ease, background .15s}
+.rv-bar__count{width:36px; text-align:right; font-size:15px; color:var(--mute); font-variant-numeric:tabular-nums}
+.rv-bar.is-hot .rv-bar__fill{background:#D98C1E}
+.rv-bar:focus-visible > *{background:rgba(242,181,68,.2)}
+
+.rv-tip{
+  position:absolute; z-index:5; pointer-events:none;
+  display:flex; flex-direction:column; gap:2px;
+  padding:8px 12px; border-radius:10px;
+  background:var(--wood-deep); color:var(--cream); box-shadow:var(--shadow-lg);
+  font-size:14px; line-height:1.3; white-space:nowrap;
+}
+.rv-tip[hidden]{display:none}
+.rv-tip strong{font-size:15px; color:var(--white)}
+
+/* The form: one card per question, as on the feedback form. */
+.rv-respond{display:flex; flex-direction:column; gap:18px}
+.rv-form{display:flex; flex-direction:column; gap:18px}
+.rv-form[hidden]{display:none}
+.rv-required{font-size:14px; font-weight:600; color:var(--error)}
+.rv-q{margin:0; min-width:0; transition:border-color .2s}
+.rv-q--error{border-color:var(--error)}
+.rv-q__legend,
+.rv-q__label{display:block; padding:0; font-weight:700; font-size:17px; line-height:1.5; color:var(--wood-deep)}
+/* Floated so the legend sits inside the card instead of on its border. */
+.rv-q__legend{float:left; width:100%}
+.rv-ask{color:var(--error)}
+.rv-nowrap{white-space:nowrap}
+
+.rv-rate{clear:both; display:flex; justify-content:center; gap:clamp(2px,1.4vw,14px); padding-top:16px}
+.rv-rate__opt{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:8px;
+  padding:6px 8px; border-radius:12px; cursor:pointer;
+}
+.rv-rate__opt input{position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer}
+.rv-rate__opt:has(input:focus-visible){outline:3px solid var(--gold); outline-offset:2px}
+.rv-rate__n{font-size:15px; font-weight:600; color:var(--mute)}
+.rv-rate .rv-star{width:clamp(30px,3.6vw,38px); height:clamp(30px,3.6vw,38px); transition:transform .15s}
+.rv-rate__opt:hover .rv-star{transform:scale(1.08)}
+
+.rv-text{
+  display:block; width:100%; min-height:120px; margin-top:14px; resize:vertical;
+  padding:12px 14px; font:inherit; font-size:16px; line-height:1.6; color:var(--ink);
+  background:var(--paper); border:0; border-bottom:2px solid rgba(139,90,43,.45);
+  border-radius:10px 10px 0 0;
+}
+.rv-text::placeholder{color:#7D6547; opacity:1}
+.rv-text:focus{outline:none; border-bottom-color:var(--gold-deep); box-shadow:0 2px 0 var(--gold-deep)}
+.rv-q__foot{display:flex; align-items:flex-start; gap:12px}
+.rv-counter{margin:10px 0 0 auto; font-size:13px; color:var(--mute); font-variant-numeric:tabular-nums}
+.rv-counter.is-near{color:var(--error)}
+.rv-error{margin-top:10px; font-size:14px; font-weight:600; color:var(--error)}
+.rv-error[hidden]{display:none}
+
+.rv-hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.rv-submit{display:flex; align-items:center; gap:18px; flex-wrap:wrap}
+.rv-note{flex:1 1 220px; font-size:14px; color:var(--mute)}
+.rv-status{font-size:15px; font-weight:600; color:var(--leaf-deep)}
+.rv-status.is-error{color:var(--error)}
+.rv-status:empty{display:none}
+
+.rv-thanks{display:flex; flex-direction:column; align-items:flex-start; gap:12px; outline:none}
+.rv-thanks[hidden]{display:none}
+.rv-thanks h3{font-size:22px}
+.rv-thanks p{color:var(--mute)}
+
+/* Everyone's reviews, newest first. */
+.rv-feed{margin-top:56px; max-width:860px}
+.rv-feed__title{margin-bottom:18px; text-align:center; font-size:24px}
+.rv-feed__status{text-align:center; color:var(--mute)}
+.rv-feed__status.is-error{color:var(--error)}
+.rv-feed__status[hidden]{display:none}
+.rv-list{display:flex; flex-direction:column; gap:16px}
+.rv-item{
+  display:flex; flex-direction:column; gap:10px; padding:20px 24px;
+  background:var(--white); border:2px solid rgba(201,151,90,.35); border-radius:18px;
+}
+.rv-item.is-new{animation:rv-new 2.4s ease}
+@keyframes rv-new{from{background:#FFF1CF; border-color:var(--gold)}}
+.rv-item__head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap}
+.rv-item__stars{display:inline-flex; gap:3px}
+.rv-item__stars .rv-star{width:18px; height:18px}
+.rv-item__date{font-size:14px; color:var(--mute)}
+.rv-item__text{font-size:16px; line-height:1.65; white-space:pre-line; overflow-wrap:anywhere}
+.rv-more{margin-top:24px; text-align:center}
+
+@media (prefers-reduced-motion:reduce){
+  .rv-bar__fill{transition:none}
+  .rv-item.is-new{animation:none}
+  .rv-rate__opt:hover .rv-star{transform:none}
+}
+
 /* ---------------- Scroll reveal ---------------- */
 /* Only a scripted page hides anything: .js is set by an inline script in the
    head. Without it every section stays visible, so a blocked or failed
@@ -357,6 +509,8 @@ p.lead.on-dark{color:var(--cream)}
   .split__copy{text-align:left}
   .showcase{grid-template-columns:1fr}
   .grid--2{grid-template-columns:1fr}
+  .rv-layout{grid-template-columns:1fr}
+  .rv-summary{position:relative; top:auto}
 }
 
 /* ============================================================
@@ -395,6 +549,8 @@ p.lead.on-dark{color:var(--cream)}
   .stats__inner{grid-template-columns:repeat(2,1fr); gap:24px}
   .req dl{grid-template-columns:1fr; gap:18px}
   .card{padding:24px}
+  .rv-card{padding:24px}
+  .rv-item{padding:18px 20px}
   .hero__shots-row{grid-template-columns:1fr}
 
   .footer__inner{flex-direction:column; text-align:center}
@@ -410,4 +566,6 @@ p.lead.on-dark{color:var(--cream)}
   .stat:last-child{grid-column:1 / -1}
   .btn{width:100%}
   .hero__cta{flex-direction:column; width:100%}
+  .rv-rate__opt{padding:6px 2px}
+  .rv-score{gap:14px}
 }

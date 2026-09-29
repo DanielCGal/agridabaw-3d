@@ -18,9 +18,10 @@ Built by **GreenScape** — Daniel C. Galam and Jessica Mae G. Suello.
 ## What's in this repository
 
 ```
-index.html              The whole page — one document, thirteen sections
+index.html              The whole page — one document, fourteen sections
 assets/css/styles.css   All styling, including the tablet and phone breakpoints
 assets/js/main.js       Mobile nav, scroll reveal, nav highlighting, screenshot lightbox
+assets/js/reviews.js    Ratings and reviews: shows the overall rating and comments, sends new ones
 assets/img/             Game screenshots, logos, and two painted background images
 .nojekyll               Tells GitHub Pages to serve the files as-is
 ```
@@ -71,18 +72,47 @@ still visible and the navigation links still work. A link that carries a
 fragment, such as `#about`, is re-aimed at its section once the page has
 finished loading, because the browser can otherwise leave it at the top.
 
+## Ratings and reviews
+
+Below the download section, visitors rate the game from 1 to 5 stars and answer
+"What did you like about AgriDabaw-3D, and what improvements or suggestions would
+you recommend?", the same two questions as the feedback form. The section shows
+the average rating, a bar for each star level, and every comment, newest first,
+ten at a time.
+
+The reviews are stored by the game's own server (`agridabao-api` on Railway), whose
+address is in the section's `data-api` attribute:
+
+- `GET /api/reviews?page=0&size=10` returns the overall rating and a page of reviews.
+- `POST /api/reviews` with `{ "rating": 5, "comment": "..." }` adds one.
+
+Reviews are anonymous and need no account. The server only accepts them from this
+website's address, limits how many can be sent in an hour, and turns away bots
+through a hidden form field. Comments are shown as plain text, never as HTML.
+
+**Taking a comment down.** In Railway, open the Postgres database, find the row in
+the `game_review` table and set `hidden` to `true`. The comment disappears from the
+list and from the average on the next page load. Nothing is deleted.
+
+**Previewing locally.** A local copy reads the live reviews. To try the section
+against a test server instead, add `?api=` to the address, for example
+`http://127.0.0.1:8777/?api=http://127.0.0.1:8099`. This only works on your own
+computer, never on the live site.
+
 ## The game download
 
-The APK is about 391 MB, which is far beyond GitHub's 100 MB per-file limit for
+The APK is about 407 MB, which is far beyond GitHub's 100 MB per-file limit for
 repository contents, so it is published as a **GitHub Release asset** instead. The
-download button points at:
+download button points at the release for that exact version:
 
 ```
-https://github.com/DanielCGal/agridabaw-3d/releases/latest/download/AgriDabaw-3D-v8.2.apk
+https://github.com/DanielCGal/agridabaw-3d/releases/download/v9/AgriDabaw-3D-v9.apk
 ```
 
-Because the URL uses `releases/latest`, publishing a newer release with the same
-asset filename updates the download without touching the website.
+To publish a new version: create a GitHub Release with a new tag (for example
+`v10`), attach the APK named to match (`AgriDabaw-3D-v10.apk`), then update the link,
+the version and the download size in the download section of `index.html`.
+Because each link names its own release, an older release can never break it.
 
 ## Deployment
 

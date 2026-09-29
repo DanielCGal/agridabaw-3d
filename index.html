@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/styles.css?v=9">
 
 <!-- Marks the page as scripted. The scroll-reveal animation and the phone menu
      only hide anything once this class is set, so if the script never loads the
@@ -269,19 +269,114 @@
     <dl>
       <div><dt>Device</dt><dd>Android phone or tablet</dd></div>
       <div><dt>Android version</dt><dd>Android 8.0 or newer</dd></div>
-      <div><dt>Download size</dt><dd>About 391 MB</dd></div>
+      <div><dt>Download size</dt><dd>About 407 MB</dd></div>
       <div><dt>Internet</dt><dd>Required — your account, saving your farm, the AI Advisor, chat, marketplace and trading</dd></div>
     </dl>
   </div>
 
   <div class="download reveal">
-    <a class="btn btn--gold btn--lg" id="apkLink" href="https://github.com/DanielCGal/agridabaw-3d/releases/latest/download/AgriDabaw-3D-v8.2.apk">Download AgriDabaw-3D for Android</a>
-    <p class="download__note">Version 8.2 &nbsp;·&nbsp; Android APK &nbsp;·&nbsp; about 391 MB. The website itself works on any laptop, desktop, tablet or phone browser — the game installs on Android.</p>
+    <a class="btn btn--gold btn--lg" id="apkLink" href="https://github.com/DanielCGal/agridabaw-3d/releases/download/v9/AgriDabaw-3D-v9.apk">Download AgriDabaw-3D for Android</a>
+    <p class="download__note">Version 9 &nbsp;·&nbsp; Android APK &nbsp;·&nbsp; about 407 MB. The website itself works on any laptop, desktop, tablet or phone browser — the game installs on Android.</p>
   </div>
 </section>
 
+<!-- ================= REVIEWS ================= -->
+<!-- Ratings and comments live on the game's own server. reviews.js reads the
+     address from data-api; everything inside is filled in by that script. -->
+<section class="section section--cream reviews" id="reviews" data-api="https://agridabao-api-production.up.railway.app">
+  <svg class="rv-sprite" width="0" height="0" aria-hidden="true" focusable="false">
+    <symbol id="rv-star" viewBox="0 0 24 24"><path d="M12 2.4 14.53 9.12 21.7 9.45 16.09 13.93 18 20.85 12 16.9 6 20.85 7.91 13.93 2.3 9.45 9.47 9.12Z"/></symbol>
+  </svg>
+
+  <div class="head reveal">
+    <p class="eyebrow">Ratings &amp; reviews</p>
+    <h2>Tell us what you think.</h2>
+    <p class="lead">Thank you for trying AgriDabaw-3D! Please answer the following questions based on your experience using the game. Your feedback will help us improve the game.</p>
+  </div>
+
+  <div class="rv-layout">
+    <div class="rv-card rv-summary reveal">
+      <h3>Overall rating</h3>
+      <div class="rv-score">
+        <p class="rv-score__n is-empty" id="rvAverage">0.0</p>
+        <div class="rv-score__meta">
+          <span class="rv-avgstars" id="rvAvgStars" role="img" aria-label="No ratings yet">
+            <span class="rv-avgstars__row" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
+            <span class="rv-avgstars__row rv-avgstars__row--fill" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
+          </span>
+          <p class="rv-score__count" id="rvTotal">Loading ratings…</p>
+        </div>
+      </div>
+      <table class="rv-bars">
+        <caption class="sr-only">Number of ratings at each star level</caption>
+        <tbody>
+          <tr class="rv-bar" data-stars="5" tabindex="0"><th scope="row" class="rv-bar__label">5<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="4" tabindex="0"><th scope="row" class="rv-bar__label">4<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="3" tabindex="0"><th scope="row" class="rv-bar__label">3<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="2" tabindex="0"><th scope="row" class="rv-bar__label">2<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="1" tabindex="0"><th scope="row" class="rv-bar__label">1<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> star</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+        </tbody>
+      </table>
+      <div class="rv-tip" id="rvTip" hidden></div>
+    </div>
+
+    <div class="rv-respond">
+      <form class="rv-form" id="rvForm" novalidate>
+        <p class="rv-required reveal">* Indicates required question</p>
+
+        <fieldset class="rv-card rv-q reveal" id="rvRatingQ" aria-describedby="rvRatingError">
+          <legend class="rv-q__legend">How would you rate <span class="rv-nowrap">AgriDabaw-3D?</span>&nbsp;<span class="rv-ask" aria-hidden="true">*</span></legend>
+          <div class="rv-rate" id="rvRate">
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">1</span><input type="radio" name="rating" value="1"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">1 star</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">2</span><input type="radio" name="rating" value="2"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">2 stars</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">3</span><input type="radio" name="rating" value="3"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">3 stars</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">4</span><input type="radio" name="rating" value="4"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">4 stars</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">5</span><input type="radio" name="rating" value="5"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only">5 stars</span></label>
+          </div>
+          <p class="rv-error" id="rvRatingError" hidden></p>
+        </fieldset>
+
+        <div class="rv-card rv-q reveal" id="rvCommentQ">
+          <label class="rv-q__label" for="rvComment">What did you like about <span class="rv-nowrap">AgriDabaw-3D,</span> and what improvements or suggestions would you recommend?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></label>
+          <textarea class="rv-text" id="rvComment" name="comment" rows="4" maxlength="1000" placeholder="Your answer" aria-describedby="rvCommentError rvCounter"></textarea>
+          <div class="rv-q__foot">
+            <p class="rv-error" id="rvCommentError" hidden></p>
+            <span class="rv-counter" id="rvCounter">0 / 1000</span>
+          </div>
+        </div>
+
+        <!-- Left empty by people; bots that fill every field are turned away. -->
+        <div class="rv-hp" aria-hidden="true">
+          <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        </div>
+
+        <div class="rv-submit reveal">
+          <button class="btn btn--gold" type="submit" id="rvSubmit">Submit</button>
+          <p class="rv-note">Reviews are public and anonymous. Please don't include personal information.</p>
+        </div>
+        <p class="rv-status" id="rvStatus" role="status" aria-live="polite"></p>
+      </form>
+
+      <div class="rv-card rv-thanks" id="rvThanks" tabindex="-1" hidden>
+        <h3>Thanks for your feedback!</h3>
+        <p>Your rating and comment are now posted below.</p>
+        <button class="btn btn--line btn--sm" type="button" id="rvAgain">Submit another response</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="rv-feed">
+    <h3 class="rv-feed__title">What players are saying</h3>
+    <p class="rv-feed__status" id="rvFeedStatus" role="status" aria-live="polite">Loading reviews…</p>
+    <ul class="rv-list" id="rvList"></ul>
+    <div class="rv-more"><button class="btn btn--line btn--sm" type="button" id="rvMore" hidden>Show more reviews</button></div>
+  </div>
+
+  <noscript><p class="rv-noscript">Turn on JavaScript to see the ratings and leave a review.</p></noscript>
+</section>
+
 <!-- ================= TEAM ================= -->
-<section class="section section--cream team" id="team">
+<section class="section section--paper team" id="team">
   <img class="team__logo reveal" src="assets/img/logo-team.png" alt="GreenScape team logo" width="260" height="105" loading="lazy">
   <h2 class="reveal">Built by GreenScape</h2>
   <p class="lead reveal">A capstone project of Assumption College of Davao</p>
@@ -318,5 +413,6 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/reviews.js?v=9"></script>
 </body>
 </html>
