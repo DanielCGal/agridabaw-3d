@@ -146,6 +146,17 @@ p{margin:0}
 .hero__shots-row{display:grid; grid-template-columns:1fr 1fr; gap:16px}
 .hero__shots-row img{border-radius:14px; box-shadow:var(--shadow); border:3px solid rgba(247,235,211,.2)}
 
+/* ---------------- Trailer ---------------- */
+/* The frame holds the 16:9 shape before the video loads, so the page does not
+   jump when the poster or the first frame arrives. */
+/* Two classes, so this width wins over the section's own max-width rule. */
+.trailer .trailer__frame{
+  max-width:980px; aspect-ratio:16 / 9; overflow:hidden; background:#000;
+  border-radius:var(--radius); border:3px solid rgba(201,151,90,.5); box-shadow:var(--shadow-lg);
+}
+.trailer__video{display:block; width:100%; height:100%; background:#000}
+.trailer__note{margin-top:18px; text-align:center; font-size:15px; color:var(--mute)}
+
 /* ---------------- Stats ---------------- */
 .stats{background:var(--wood-deep)}
 .stats__inner{
@@ -349,7 +360,16 @@ html:not(.js) .rv-layout,
 html:not(.js) .rv-feed{display:none}
 .rv-noscript{text-align:center; color:var(--mute)}
 
-.rv-layout{display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); gap:26px; align-items:start}
+/* Wide screens: the overall rating, then the other charts, down the left;
+   the form down the right. The form comes second in the page itself, so on a
+   phone the visitor reaches it straight after the rating. */
+.rv-layout{
+  display:grid; grid-template-columns:minmax(0,5fr) minmax(0,7fr); grid-template-rows:auto 1fr;
+  grid-template-areas:"rating form" "charts form"; gap:18px 26px; align-items:start;
+}
+.rv-overall{grid-area:rating}
+.rv-respond{grid-area:form}
+.rv-charts{grid-area:charts}
 .rv-card{
   background:var(--white); border:2px solid rgba(201,151,90,.45);
   border-radius:var(--radius); padding:30px; box-shadow:var(--shadow);
@@ -364,11 +384,14 @@ html:not(.js) .rv-feed{display:none}
 .is-on > .rv-star,
 .rv-avgstars__row--fill .rv-star{fill:var(--gold); stroke:#C27A12}
 
-/* Overall rating: the average, then one bar per star level. */
-/* Sticky beside the form on wide screens, so the rating stays in view while
-   the form is filled in; static once the two stack. */
-.rv-summary{position:sticky; top:100px; display:flex; flex-direction:column; gap:22px}
-.rv-summary h3{font-size:22px}
+/* One card per question that has a chart. */
+.rv-charts{display:flex; flex-direction:column; gap:18px; min-width:0}
+
+/* A 1 to 5 rating: the average, then one bar per level. Positioned so the
+   bar tooltip can be placed inside the card. */
+.rv-summary{position:relative; display:flex; flex-direction:column; gap:22px}
+.rv-summary h3,
+.rv-chart h3{font-size:22px}
 .rv-score{display:flex; align-items:center; gap:20px}
 .rv-score__n{font-family:var(--display); font-weight:800; font-size:clamp(52px,6vw,64px); line-height:1; color:var(--wood-deep)}
 .rv-score__n.is-empty{color:#A87F4F}
@@ -406,6 +429,24 @@ html:not(.js) .rv-feed{display:none}
 .rv-tip[hidden]{display:none}
 .rv-tip strong{font-size:15px; color:var(--white)}
 
+/* A choose-all-that-apply question: one row per choice, most chosen first.
+   The label and the count sit above the bar so a long label never squeezes
+   it, and the count and share are always printed, not hidden in a tooltip. */
+.rv-chart{display:flex; flex-direction:column; gap:16px}
+.rv-chart__meta{margin-top:-10px; font-size:15px; color:var(--mute)}
+.rv-hbars{display:flex; flex-direction:column; gap:12px; margin:0; padding:0; list-style:none}
+.rv-hbar{display:grid; grid-template-columns:minmax(0,1fr) auto; gap:5px 12px; align-items:baseline}
+.rv-hbar__label{font-size:15px; font-weight:700; line-height:1.35; color:var(--wood-deep); overflow-wrap:anywhere}
+.rv-hbar__value{font-size:14px; color:var(--mute); white-space:nowrap; font-variant-numeric:tabular-nums}
+.rv-hbar__track{grid-column:1 / -1; display:block; height:12px; border-radius:0 4px 4px 0; background:#FBEBCB}
+.rv-hbar__fill{display:block; width:0; height:100%; border-radius:0 4px 4px 0; background:#C27A12; transition:width .7s ease}
+
+.rv-others{font-size:15px; color:var(--mute)}
+.rv-others[hidden]{display:none}
+.rv-others summary{cursor:pointer; font-weight:700; color:var(--wood-deep)}
+.rv-others ul{display:flex; flex-direction:column; gap:6px; margin-top:10px; padding-left:20px; list-style:disc}
+.rv-others li{overflow-wrap:anywhere}
+
 /* The form: one card per question, as on the feedback form. */
 .rv-respond{display:flex; flex-direction:column; gap:18px}
 .rv-form{display:flex; flex-direction:column; gap:18px}
@@ -430,6 +471,25 @@ html:not(.js) .rv-feed{display:none}
 .rv-rate__n{font-size:15px; font-weight:600; color:var(--mute)}
 .rv-rate .rv-star{width:clamp(30px,3.6vw,38px); height:clamp(30px,3.6vw,38px); transition:transform .15s}
 .rv-rate__opt:hover .rv-star{transform:scale(1.08)}
+/* With a word under each star the five options share the row equally, so the
+   words line up under their stars whatever their length. */
+.rv-rate--words{gap:2px}
+.rv-rate--words .rv-rate__opt{flex:1 1 0; min-width:0; max-width:104px; padding:6px 2px}
+.rv-rate__word{font-size:13px; font-weight:600; line-height:1.25; text-align:center; color:var(--mute)}
+
+/* Choose-all-that-apply questions. */
+.rv-hint--top{clear:both; margin-top:0; padding-top:6px}
+.rv-checks{clear:both; display:flex; flex-direction:column; gap:2px; padding-top:10px}
+.rv-check{
+  display:flex; align-items:flex-start; gap:12px; padding:9px 10px;
+  border-radius:10px; cursor:pointer; font-size:16px; line-height:1.45; color:var(--ink);
+}
+.rv-check:hover{background:rgba(242,181,68,.16)}
+.rv-check input{flex-shrink:0; width:20px; height:20px; margin:2px 0 0; accent-color:#C27A12; cursor:pointer}
+.rv-check:has(input:focus-visible){outline:3px solid var(--gold); outline-offset:1px}
+.rv-check input:focus-visible{outline:none}
+.rv-check-other{display:flex; align-items:center; gap:4px 8px; flex-wrap:wrap}
+.rv-input--inline{flex:1 1 180px; width:auto; max-width:none; margin-top:0; padding:8px 12px}
 
 .rv-text,
 .rv-input{
@@ -484,10 +544,16 @@ html:not(.js) .rv-feed{display:none}
 .rv-item__stars .rv-star{width:18px; height:18px}
 .rv-item__date{font-size:14px; color:var(--mute)}
 .rv-item__text{font-size:16px; line-height:1.65; white-space:pre-line; overflow-wrap:anywhere}
+.rv-item__extra{
+  padding-top:10px; border-top:1px dashed rgba(201,151,90,.55);
+  font-size:15px; line-height:1.6; color:var(--mute); white-space:pre-line; overflow-wrap:anywhere;
+}
+.rv-item__extra strong{color:var(--wood-deep)}
 .rv-more{margin-top:24px; text-align:center}
 
 @media (prefers-reduced-motion:reduce){
-  .rv-bar__fill{transition:none}
+  .rv-bar__fill,
+  .rv-hbar__fill{transition:none}
   .rv-item.is-new{animation:none}
   .rv-rate__opt:hover .rv-star{transform:none}
 }
@@ -557,8 +623,7 @@ html:not(.js) .rv-feed{display:none}
   .split__copy{text-align:left}
   .showcase{grid-template-columns:1fr}
   .grid--2{grid-template-columns:1fr}
-  .rv-layout{grid-template-columns:1fr}
-  .rv-summary{position:relative; top:auto}
+  .rv-layout{grid-template-columns:minmax(0,1fr); grid-template-rows:none; grid-template-areas:"rating" "form" "charts"; gap:22px}
 }
 
 /* ============================================================

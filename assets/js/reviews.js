@@ -1,7 +1,7 @@
 /* AgriDabaw-3D — ratings and reviews
-   Reads the overall rating and the players' comments from the game's server
-   and posts a new rating and comment from the form. Text from the server is
-   always inserted with textContent, never as HTML. */
+   Reads the ratings, the survey answers and the players' comments from the
+   game's server and posts a new response from the form. Text from the server
+   is always inserted with textContent, never as HTML. */
 (function () {
   'use strict';
 
@@ -11,6 +11,7 @@
   var PAGE_SIZE = 10;
   var MAX_CHARS = 1000;
   var REQUIRED = 'This is a required question';
+  var OTHER_REQUIRED = 'Please write your answer beside Other';
   var SVG_NS = 'http://www.w3.org/2000/svg';
 
   /* A preview opened on this computer can talk to a test server, for example
@@ -22,25 +23,24 @@
     if (override && /^https?:\/\//i.test(override)) api = override.replace(/\/+$/, '');
   }
 
-  var average = document.getElementById('rvAverage');
-  var avgStars = document.getElementById('rvAvgStars');
-  var totalLine = document.getElementById('rvTotal');
-  var bars = Array.prototype.slice.call(section.querySelectorAll('.rv-bar'));
-  var tip = document.getElementById('rvTip');
-  var summaryCard = section.querySelector('.rv-summary');
-
   var form = document.getElementById('rvForm');
   var nameInput = document.getElementById('rvName');
   var nameQ = document.getElementById('rvNameQ');
   var nameError = document.getElementById('rvNameError');
-  var rate = document.getElementById('rvRate');
-  var options = Array.prototype.slice.call(rate.querySelectorAll('.rv-rate__opt'));
   var ratingQ = document.getElementById('rvRatingQ');
   var ratingError = document.getElementById('rvRatingError');
   var comment = document.getElementById('rvComment');
   var commentQ = document.getElementById('rvCommentQ');
   var commentError = document.getElementById('rvCommentError');
-  var counter = document.getElementById('rvCounter');
+  var featuresQ = document.getElementById('rvFeaturesQ');
+  var featuresError = document.getElementById('rvFeaturesError');
+  var webRatingQ = document.getElementById('rvWebRatingQ');
+  var webRatingError = document.getElementById('rvWebRatingError');
+  var hardestQ = document.getElementById('rvHardestQ');
+  var hardestError = document.getElementById('rvHardestError');
+  var change = document.getElementById('rvChange');
+  var changeQ = document.getElementById('rvChangeQ');
+  var changeError = document.getElementById('rvChangeError');
   var submit = document.getElementById('rvSubmit');
   var status = document.getElementById('rvStatus');
   var thanks = document.getElementById('rvThanks');
@@ -53,19 +53,17 @@
   var numbers = new Intl.NumberFormat('en-PH');
   var dates = new Intl.DateTimeFormat('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
 
-  var summary = null;
-  var selected = 0;
   var sending = false;
   var loading = false;
   var nextPage = 0;
   var shown = {};
 
-  function plural(count, word) {
-    return numbers.format(count) + ' ' + word + (count === 1 ? '' : 's');
+  function toArray(nodes) {
+    return Array.prototype.slice.call(nodes);
   }
 
-  function starLabel(stars) {
-    return stars + (stars === 1 ? ' star' : ' stars');
+  function plural(count, word) {
+    return numbers.format(count) + ' ' + word + (count === 1 ? '' : 's');
   }
 
   /* ---------- Talking to the server ---------- */
@@ -92,80 +90,202 @@
     });
   }
 
-  /* ---------- Overall rating ---------- */
-  function renderSummary(next) {
-    if (!next) return;
-    summary = next;
+  /* ---------- A 1 to 5 rating: the average, then one bar per level ---------- */
+  function starChart(card) {
+    var average = card.querySelector('.rv-score__n');
+    var avgStars = card.querySelector('.rv-avgstars');
+    var totalLine = card.querySelector('.rv-score__count');
+    var bars = toArray(card.querySelectorAll('.rv-bar'));
+    var tip = card.querySelector('.rv-tip');
+    var data = null;
 
-    var total = next.total || 0;
-    var mean = total ? next.average : 0;
+    function levelName(row) {
+      var stars = Number(row.getAttribute('data-stars'));
+      var word = row.getAttribute('data-word') || '';
+      return /^stars?$/.test(word) ? stars + ' ' + word : stars + ' — ' + word;
+    }
 
-    average.textContent = mean.toFixed(1);
-    average.classList.toggle('is-empty', !total);
-    avgStars.style.setProperty('--fill', (mean / 5 * 100) + '%');
-    avgStars.setAttribute('aria-label', total
-      ? 'Average rating ' + mean.toFixed(1) + ' out of 5'
-      : 'No ratings yet');
-    totalLine.textContent = total ? plural(total, 'rating') : 'No ratings yet';
+    function render(next) {
+      if (!next) return;
+      data = next;
+
+      var total = next.total || 0;
+      var mean = total ? next.average : 0;
+
+      average.textContent = mean.toFixed(1);
+      average.classList.toggle('is-empty', !total);
+      avgStars.style.setProperty('--fill', (mean / 5 * 100) + '%');
+      avgStars.setAttribute('aria-label', total
+        ? 'Average rating ' + mean.toFixed(1) + ' out of 5'
+        : 'No ratings yet');
+      totalLine.textContent = total ? plural(total, 'rating') : 'No ratings yet';
+
+      bars.forEach(function (row) {
+        var stars = Number(row.getAttribute('data-stars'));
+        var count = (next.counts && next.counts[stars - 1]) || 0;
+        row.querySelector('.rv-bar__fill').style.width = (total ? count / total * 100 : 0) + '%';
+        row.querySelector('.rv-bar__count').textContent = numbers.format(count);
+      });
+    }
+
+    function unavailable() {
+      if (!data) totalLine.textContent = 'Ratings are unavailable right now';
+    }
+
+    /* The tooltip adds each level's share. The count itself is always printed
+       at the end of the bar, so nothing is only readable by hovering. */
+    function showTip(row, clientX) {
+      if (!data) return;
+
+      var stars = Number(row.getAttribute('data-stars'));
+      var total = data.total || 0;
+      var count = (data.counts && data.counts[stars - 1]) || 0;
+      var share = total ? Math.round(count / total * 100) : 0;
+
+      tip.textContent = '';
+      var value = document.createElement('strong');
+      value.textContent = plural(count, 'rating');
+      var label = document.createElement('span');
+      label.textContent = levelName(row) + ' · ' + share + '% of ratings';
+      tip.appendChild(value);
+      tip.appendChild(label);
+      tip.hidden = false;
+
+      bars.forEach(function (other) { other.classList.toggle('is-hot', other === row); });
+
+      /* Beside the pointer (or the bar's end, for keyboard focus) and level
+         with the row, so it never covers the average or the bar being read. */
+      var box = card.getBoundingClientRect();
+      var rowBox = row.getBoundingClientRect();
+      var fill = row.querySelector('.rv-bar__fill').getBoundingClientRect();
+      var anchor = typeof clientX === 'number' ? clientX : Math.max(fill.right, fill.left + 8);
+      var left = anchor - box.left + 14;
+      if (left + tip.offsetWidth > box.width - 12) left = anchor - box.left - tip.offsetWidth - 14;
+
+      tip.style.left = Math.max(12, left) + 'px';
+      tip.style.top = (rowBox.top - box.top + rowBox.height / 2 - tip.offsetHeight / 2) + 'px';
+    }
+
+    function hideTip() {
+      tip.hidden = true;
+      bars.forEach(function (row) { row.classList.remove('is-hot'); });
+    }
 
     bars.forEach(function (row) {
-      var stars = Number(row.getAttribute('data-stars'));
-      var count = (next.counts && next.counts[stars - 1]) || 0;
-      row.querySelector('.rv-bar__fill').style.width = (total ? count / total * 100 : 0) + '%';
-      row.querySelector('.rv-bar__count').textContent = numbers.format(count);
+      row.addEventListener('pointermove', function (e) { showTip(row, e.clientX); });
+      row.addEventListener('pointerleave', hideTip);
+      row.addEventListener('focus', function () { showTip(row); });
+      row.addEventListener('blur', hideTip);
     });
+
+    return { render: render, unavailable: unavailable };
   }
 
-  function summaryUnavailable() {
-    if (summary) return;
-    totalLine.textContent = 'Ratings are unavailable right now';
+  /* ---------- A choose-all-that-apply question: one bar per choice ---------- */
+  /* The choices and their labels are read from the form's own checkboxes, so
+     the chart can never list something the form does not ask. A bar's length
+     is the share of the people who answered the question that ticked it. */
+  function choiceChart(card, boxes) {
+    var meta = card.querySelector('.rv-chart__meta');
+    var bars = card.querySelector('.rv-hbars');
+    var others = card.querySelector('.rv-others');
+    var othersTitle = others.querySelector('summary');
+    var othersList = others.querySelector('ul');
+    var answered = false;
+
+    var rows = boxes.map(function (box, index) {
+      var item = document.createElement('li');
+      item.className = 'rv-hbar';
+
+      var label = document.createElement('span');
+      label.className = 'rv-hbar__label';
+      label.textContent = box.getAttribute('data-label') ||
+        box.parentNode.textContent.replace(/:\s*$/, '').trim();
+
+      var value = document.createElement('span');
+      value.className = 'rv-hbar__value';
+      value.textContent = '0';
+
+      var track = document.createElement('span');
+      track.className = 'rv-hbar__track';
+      track.setAttribute('aria-hidden', 'true');
+      var fill = document.createElement('span');
+      fill.className = 'rv-hbar__fill';
+      track.appendChild(fill);
+
+      item.appendChild(label);
+      item.appendChild(value);
+      item.appendChild(track);
+      bars.appendChild(item);
+
+      return { code: box.value, index: index, item: item, value: value, fill: fill, count: 0 };
+    });
+
+    function render(next) {
+      if (!next) return;
+      answered = true;
+
+      var responses = next.responses || 0;
+      meta.textContent = responses
+        ? plural(responses, 'response') + ' · most chosen first'
+        : 'No answers yet';
+
+      rows.forEach(function (row) { row.count = (next.counts && next.counts[row.code]) || 0; });
+      rows.slice()
+        .sort(function (a, b) { return b.count - a.count || a.index - b.index; })
+        .forEach(function (row) {
+          var share = responses ? Math.round(row.count / responses * 100) : 0;
+          row.fill.style.width = (responses ? Math.min(100, row.count / responses * 100) : 0) + '%';
+          row.value.textContent = responses
+            ? numbers.format(row.count) + ' · ' + share + '%'
+            : numbers.format(row.count);
+          bars.appendChild(row.item);
+        });
+
+      var written = next.others || [];
+      othersList.textContent = '';
+      written.forEach(function (text) {
+        var line = document.createElement('li');
+        line.textContent = text;
+        othersList.appendChild(line);
+      });
+      othersTitle.textContent = 'Other answers (' + numbers.format(written.length) + ')';
+      others.hidden = !written.length;
+    }
+
+    function unavailable() {
+      if (!answered) meta.textContent = 'Answers are unavailable right now';
+    }
+
+    return { render: render, unavailable: unavailable };
   }
 
-  /* The tooltip adds each level's share. The count itself is always printed at
-     the end of the bar, so nothing is only readable by hovering. */
-  function showTip(row, clientX) {
-    if (!summary) return;
+  var ratingChart = starChart(document.getElementById('rvRatingChart'));
+  var websiteChart = starChart(document.getElementById('rvWebsiteChart'));
+  var featuresChart = choiceChart(document.getElementById('rvFeaturesChart'),
+    toArray(form.querySelectorAll('input[name="features"]')));
+  var hardestChart = choiceChart(document.getElementById('rvHardestChart'),
+    toArray(form.querySelectorAll('input[name="hardestSections"]')));
 
-    var stars = Number(row.getAttribute('data-stars'));
-    var total = summary.total || 0;
-    var count = (summary.counts && summary.counts[stars - 1]) || 0;
-    var share = total ? Math.round(count / total * 100) : 0;
+  function renderCharts(data) {
+    ratingChart.render(data.summary);
 
-    tip.textContent = '';
-    var value = document.createElement('strong');
-    value.textContent = plural(count, 'rating');
-    var label = document.createElement('span');
-    label.textContent = starLabel(stars) + ' · ' + share + '% of ratings';
-    tip.appendChild(value);
-    tip.appendChild(label);
-    tip.hidden = false;
-
-    bars.forEach(function (other) { other.classList.toggle('is-hot', other === row); });
-
-    /* Beside the pointer (or the bar's end, for keyboard focus) and level with
-       the row, so it never covers the average above or the bar being read. */
-    var card = summaryCard.getBoundingClientRect();
-    var rowBox = row.getBoundingClientRect();
-    var fill = row.querySelector('.rv-bar__fill').getBoundingClientRect();
-    var anchor = typeof clientX === 'number' ? clientX : Math.max(fill.right, fill.left + 8);
-    var left = anchor - card.left + 14;
-    if (left + tip.offsetWidth > card.width - 12) left = anchor - card.left - tip.offsetWidth - 14;
-
-    tip.style.left = Math.max(12, left) + 'px';
-    tip.style.top = (rowBox.top - card.top + rowBox.height / 2 - tip.offsetHeight / 2) + 'px';
+    /* A server from before the survey questions sends no survey block. */
+    if (data.survey) {
+      featuresChart.render(data.survey.features);
+      websiteChart.render(data.survey.website);
+      hardestChart.render(data.survey.hardestSections);
+    } else {
+      chartsUnavailable();
+    }
   }
 
-  function hideTip() {
-    tip.hidden = true;
-    bars.forEach(function (row) { row.classList.remove('is-hot'); });
+  function chartsUnavailable() {
+    ratingChart.unavailable();
+    websiteChart.unavailable();
+    featuresChart.unavailable();
+    hardestChart.unavailable();
   }
-
-  bars.forEach(function (row) {
-    row.addEventListener('pointermove', function (e) { showTip(row, e.clientX); });
-    row.addEventListener('pointerleave', hideTip);
-    row.addEventListener('focus', function () { showTip(row); });
-    row.addEventListener('blur', hideTip);
-  });
 
   /* ---------- Everyone's reviews ---------- */
   function starIcon(on) {
@@ -218,6 +338,18 @@
 
     item.appendChild(head);
     item.appendChild(text);
+
+    /* Only reviews sent since the website questions were added have this. */
+    if (review.websiteChange) {
+      var extra = document.createElement('p');
+      extra.className = 'rv-item__extra';
+      var lead = document.createElement('strong');
+      lead.textContent = 'About the website: ';
+      extra.appendChild(lead);
+      extra.appendChild(document.createTextNode(review.websiteChange));
+      item.appendChild(extra);
+    }
+
     return item;
   }
 
@@ -249,7 +381,7 @@
 
     request('/api/reviews?page=' + nextPage + '&size=' + PAGE_SIZE)
       .then(function (data) {
-        renderSummary(data.summary);
+        renderCharts(data);
         (data.reviews || []).forEach(function (review) { addReview(review, false); });
         nextPage += 1;
 
@@ -258,7 +390,7 @@
         if (!list.firstChild) setFeedStatus('No reviews yet. Be the first to rate AgriDabaw-3D!');
       })
       .catch(function () {
-        summaryUnavailable();
+        chartsUnavailable();
         setFeedStatus(list.firstChild
           ? "More reviews couldn't be loaded. Please try again."
           : "Reviews couldn't be loaded right now. Please try again in a moment.", true);
@@ -287,12 +419,6 @@
   }
 
   /* ---------- The form ---------- */
-  function paintStars(value) {
-    options.forEach(function (option, index) {
-      option.classList.toggle('is-on', index < value);
-    });
-  }
-
   function showError(question, holder, message) {
     holder.textContent = message;
     holder.hidden = false;
@@ -310,34 +436,134 @@
     status.classList.toggle('is-error', !!isError);
   }
 
-  function updateCounter() {
-    var used = comment.value.length;
-    counter.textContent = numbers.format(used) + ' / ' + numbers.format(MAX_CHARS);
-    counter.classList.toggle('is-near', used > MAX_CHARS - 50);
+  /* A row of five stars to pick from. */
+  function starInput(rate, question, holder) {
+    var options = toArray(rate.querySelectorAll('.rv-rate__opt'));
+    var selected = 0;
+
+    function paint(value) {
+      options.forEach(function (option, index) {
+        option.classList.toggle('is-on', index < value);
+      });
+    }
+
+    rate.addEventListener('change', function (e) {
+      if (e.target.type !== 'radio') return;
+      selected = Number(e.target.value);
+      paint(selected);
+      clearError(question, holder);
+    });
+
+    /* Hovering previews the rating; leaving shows the chosen one again. */
+    options.forEach(function (option, index) {
+      option.addEventListener('pointerenter', function (e) {
+        if (e.pointerType === 'mouse') paint(index + 1);
+      });
+    });
+    rate.addEventListener('pointerleave', function () { paint(selected); });
+
+    return {
+      value: function () { return selected; },
+      first: function () { return rate.querySelector('input'); },
+      reset: function () { selected = 0; paint(0); }
+    };
   }
 
-  rate.addEventListener('change', function (e) {
-    if (e.target.name !== 'rating') return;
-    selected = Number(e.target.value);
-    paintStars(selected);
-    clearError(ratingQ, ratingError);
-  });
+  /* A list of checkboxes whose last choice is "Other" with a line to write
+     on. `alone`, when given, is a choice that cannot be combined with the
+     rest ("None"), so ticking it clears the others and the other way round. */
+  function checkGroup(holder, question, error, otherBox, otherText, alone) {
+    var boxes = toArray(holder.querySelectorAll('input[type="checkbox"]'));
 
-  /* Hovering previews the rating; leaving shows the chosen one again. */
-  options.forEach(function (option, index) {
-    option.addEventListener('pointerenter', function (e) {
-      if (e.pointerType === 'mouse') paintStars(index + 1);
-    });
-  });
-  rate.addEventListener('pointerleave', function () { paintStars(selected); });
-
-  comment.addEventListener('input', function () {
-    updateCounter();
-    if (comment.value.trim()) {
-      comment.removeAttribute('aria-invalid');
-      clearError(commentQ, commentError);
+    function chosen() {
+      return boxes.filter(function (box) { return box.checked; })
+        .map(function (box) { return box.value; });
     }
-  });
+
+    holder.addEventListener('change', function (e) {
+      var box = e.target;
+      if (box.type !== 'checkbox') return;
+
+      if (alone && box.checked) {
+        boxes.forEach(function (other) {
+          if (other !== box && (box.value === alone || other.value === alone)) other.checked = false;
+        });
+      }
+      if (!otherBox.checked) otherText.removeAttribute('aria-invalid');
+      if (box === otherBox && box.checked) otherText.focus();
+      if (chosen().length) clearError(question, error);
+    });
+
+    /* Writing an answer is as good as ticking the box beside it. */
+    otherText.addEventListener('input', function () {
+      if (!otherText.value.trim()) return;
+
+      if (!otherBox.checked) {
+        otherBox.checked = true;
+        if (alone) {
+          boxes.forEach(function (other) { if (other.value === alone) other.checked = false; });
+        }
+      }
+      otherText.removeAttribute('aria-invalid');
+      clearError(question, error);
+    });
+
+    return {
+      chosen: chosen,
+      other: function () { return otherBox.checked ? otherText.value.trim() : ''; },
+      /* Returns the field to send the visitor back to, or null when fine. */
+      check: function () {
+        if (!chosen().length) {
+          showError(question, error, REQUIRED);
+          return boxes[0];
+        }
+        if (otherBox.checked && !otherText.value.trim()) {
+          showError(question, error, OTHER_REQUIRED);
+          otherText.setAttribute('aria-invalid', 'true');
+          return otherText;
+        }
+        return null;
+      }
+    };
+  }
+
+  /* A long answer with a "used / allowed" counter under it. */
+  function longAnswer(field, question, error, counter) {
+    function update() {
+      var used = field.value.length;
+      counter.textContent = numbers.format(used) + ' / ' + numbers.format(MAX_CHARS);
+      counter.classList.toggle('is-near', used > MAX_CHARS - 50);
+    }
+
+    field.addEventListener('input', function () {
+      update();
+      if (field.value.trim()) {
+        field.removeAttribute('aria-invalid');
+        clearError(question, error);
+      }
+    });
+
+    update();
+    return {
+      value: function () { return field.value.trim(); },
+      update: update,
+      check: function () {
+        if (field.value.trim()) return null;
+        showError(question, error, REQUIRED);
+        field.setAttribute('aria-invalid', 'true');
+        return field;
+      }
+    };
+  }
+
+  var rating = starInput(document.getElementById('rvRate'), ratingQ, ratingError);
+  var webRating = starInput(document.getElementById('rvWebRate'), webRatingQ, webRatingError);
+  var features = checkGroup(document.getElementById('rvFeatures'), featuresQ, featuresError,
+    document.getElementById('rvFeaturesOtherBox'), document.getElementById('rvFeaturesOther'), null);
+  var hardest = checkGroup(document.getElementById('rvHardest'), hardestQ, hardestError,
+    document.getElementById('rvHardestOtherBox'), document.getElementById('rvHardestOther'), 'NONE');
+  var commentAnswer = longAnswer(comment, commentQ, commentError, document.getElementById('rvCounter'));
+  var changeAnswer = longAnswer(change, changeQ, changeError, document.getElementById('rvChangeCounter'));
 
   nameInput.addEventListener('input', function () {
     if (nameInput.value.trim()) {
@@ -351,25 +577,31 @@
     if (sending) return;
 
     var who = nameInput.value.trim();
-    var text = comment.value.trim();
-    var firstProblem = null;
+    var problems = [];
 
     if (!who) {
       showError(nameQ, nameError, REQUIRED);
       nameInput.setAttribute('aria-invalid', 'true');
-      firstProblem = nameInput;
+      problems.push(nameInput);
     }
-    if (!selected) {
+    if (!rating.value()) {
       showError(ratingQ, ratingError, REQUIRED);
-      firstProblem = firstProblem || rate.querySelector('input');
+      problems.push(rating.first());
     }
-    if (!text) {
-      showError(commentQ, commentError, REQUIRED);
-      comment.setAttribute('aria-invalid', 'true');
-      firstProblem = firstProblem || comment;
+    problems.push(commentAnswer.check());
+    problems.push(features.check());
+    if (!webRating.value()) {
+      showError(webRatingQ, webRatingError, REQUIRED);
+      problems.push(webRating.first());
     }
+    problems.push(hardest.check());
+    problems.push(changeAnswer.check());
+
+    /* The questions are checked top to bottom, so the first problem found is
+       the one highest on the page. */
+    var firstProblem = problems.filter(Boolean)[0];
     if (firstProblem) {
-      setStatus('');
+      setStatus('Some questions still need an answer.', true);
       firstProblem.focus();
       return;
     }
@@ -381,27 +613,50 @@
 
     request('/api/reviews', {
       name: who,
-      rating: selected,
-      comment: text,
+      rating: rating.value(),
+      comment: commentAnswer.value(),
+      features: features.chosen(),
+      featuresOther: features.other(),
+      websiteRating: webRating.value(),
+      hardestSections: hardest.chosen(),
+      hardestOther: hardest.other(),
+      websiteChange: changeAnswer.value(),
       website: form.elements.website.value
     })
       .then(function (data) {
-        renderSummary(data.summary);
+        renderCharts(data);
         addReview(data.review, true);
         form.reset();
-        selected = 0;
-        paintStars(0);
-        updateCounter();
+        rating.reset();
+        webRating.reset();
+        commentAnswer.update();
+        changeAnswer.update();
         form.hidden = true;
         thanks.hidden = false;
         thanks.focus();
       })
       .catch(function (error) {
         var fields = error.fields || {};
-        if (error.status === 400 && (fields.name || fields.rating || fields.comment)) {
-          if (fields.name) showError(nameQ, nameError, fields.name);
-          if (fields.rating) showError(ratingQ, ratingError, fields.rating);
-          if (fields.comment) showError(commentQ, commentError, fields.comment);
+        var known = false;
+
+        [
+          ['name', nameQ, nameError],
+          ['rating', ratingQ, ratingError],
+          ['comment', commentQ, commentError],
+          ['features', featuresQ, featuresError],
+          ['featuresOther', featuresQ, featuresError],
+          ['websiteRating', webRatingQ, webRatingError],
+          ['hardestSections', hardestQ, hardestError],
+          ['hardestOther', hardestQ, hardestError],
+          ['websiteChange', changeQ, changeError]
+        ].forEach(function (entry) {
+          if (!fields[entry[0]]) return;
+          showError(entry[1], entry[2], fields[entry[0]]);
+          known = true;
+        });
+
+        if (error.status === 400 && known) {
+          setStatus('Some questions still need an answer.', true);
         } else if (error.status === 400 || error.status === 429) {
           setStatus(error.message, true);
         } else {
@@ -415,12 +670,17 @@
       });
   });
 
+  /* The reminder under the button goes once every marked question is answered. */
+  function clearReminder() {
+    if (!sending && !form.querySelector('.rv-q--error')) setStatus('');
+  }
+  form.addEventListener('input', clearReminder);
+  form.addEventListener('change', clearReminder);
+
   again.addEventListener('click', function () {
     thanks.hidden = true;
     form.hidden = false;
     setStatus('');
     nameInput.focus();
   });
-
-  updateCounter();
 })();

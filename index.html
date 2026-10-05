@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=10">
+<link rel="stylesheet" href="assets/css/styles.css?v=11">
 
 <!-- Marks the page as scripted. The scroll-reveal animation and the phone menu
      only hide anything once this class is set, so if the script never loads the
@@ -72,7 +72,7 @@
       <p class="hero__lead">Learn farming, connect with others, think critically, and experience agriculture — all in one interactive 3D world set in Davao City.</p>
       <div class="hero__cta">
         <a class="btn btn--gold" href="#download">Download for Android</a>
-        <a class="btn btn--ghost" href="#features">See How It Works</a>
+        <a class="btn btn--ghost" href="#trailer">Watch the Trailer</a>
       </div>
       <p class="hero__meta">Free &nbsp;·&nbsp; Android APK &nbsp;·&nbsp; Capstone Project 2026 &nbsp;·&nbsp; Assumption College of Davao</p>
     </div>
@@ -96,6 +96,26 @@
     <div class="stat"><span class="stat__n">AI</span><span class="stat__l">Farming advisor</span></div>
     <div class="stat"><span class="stat__n">2</span><span class="stat__l">Climate events</span></div>
   </div>
+</section>
+
+<!-- ================= TRAILER ================= -->
+<!-- preload="none": the 43 MB video is only fetched when a visitor presses
+     play, so the page stays light on mobile data. The poster is the video's
+     own closing title card. -->
+<section class="section section--cream trailer" id="trailer">
+  <div class="head reveal">
+    <p class="eyebrow">Watch the trailer</p>
+    <h2>See AgriDabaw-3D in action.</h2>
+    <p class="lead">A short tour of the game: asking the AI Advisor a farming question, preparing the ground for planting, and facing a typhoon — then reading the Advisor's verdict on how you did.</p>
+  </div>
+
+  <div class="trailer__frame reveal">
+    <video class="trailer__video" controls preload="none" playsinline poster="assets/img/trailer-poster.jpg" width="1920" height="1080" aria-label="AgriDabaw-3D promotional video">
+      <source src="assets/video/agridabaw-3d-trailer.mp4" type="video/mp4">
+      <a href="assets/video/agridabaw-3d-trailer.mp4">Watch the AgriDabaw-3D promotional video (MP4, 43 MB)</a>
+    </video>
+  </div>
+  <p class="trailer__note reveal">1 minute 41 seconds &nbsp;·&nbsp; with sound</p>
 </section>
 
 <!-- ================= ABOUT ================= -->
@@ -296,29 +316,29 @@
   </div>
 
   <div class="rv-layout">
-    <div class="rv-card rv-summary reveal">
+    <div class="rv-card rv-summary rv-overall reveal" id="rvRatingChart">
       <h3>Overall rating</h3>
       <div class="rv-score">
-        <p class="rv-score__n is-empty" id="rvAverage">0.0</p>
+        <p class="rv-score__n is-empty">0.0</p>
         <div class="rv-score__meta">
-          <span class="rv-avgstars" id="rvAvgStars" role="img" aria-label="No ratings yet">
+          <span class="rv-avgstars" role="img" aria-label="No ratings yet">
             <span class="rv-avgstars__row" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
             <span class="rv-avgstars__row rv-avgstars__row--fill" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
           </span>
-          <p class="rv-score__count" id="rvTotal">Loading ratings…</p>
+          <p class="rv-score__count">Loading ratings…</p>
         </div>
       </div>
       <table class="rv-bars">
         <caption class="sr-only">Number of ratings at each star level</caption>
         <tbody>
-          <tr class="rv-bar" data-stars="5" tabindex="0"><th scope="row" class="rv-bar__label">5<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
-          <tr class="rv-bar" data-stars="4" tabindex="0"><th scope="row" class="rv-bar__label">4<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
-          <tr class="rv-bar" data-stars="3" tabindex="0"><th scope="row" class="rv-bar__label">3<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
-          <tr class="rv-bar" data-stars="2" tabindex="0"><th scope="row" class="rv-bar__label">2<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
-          <tr class="rv-bar" data-stars="1" tabindex="0"><th scope="row" class="rv-bar__label">1<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> star</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="5" data-word="stars" tabindex="0"><th scope="row" class="rv-bar__label">5<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="4" data-word="stars" tabindex="0"><th scope="row" class="rv-bar__label">4<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="3" data-word="stars" tabindex="0"><th scope="row" class="rv-bar__label">3<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="2" data-word="stars" tabindex="0"><th scope="row" class="rv-bar__label">2<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> stars</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="1" data-word="star" tabindex="0"><th scope="row" class="rv-bar__label">1<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> star</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
         </tbody>
       </table>
-      <div class="rv-tip" id="rvTip" hidden></div>
+      <div class="rv-tip" hidden></div>
     </div>
 
     <div class="rv-respond">
@@ -353,6 +373,63 @@
           </div>
         </div>
 
+        <fieldset class="rv-card rv-q reveal" id="rvFeaturesQ" aria-describedby="rvFeaturesError">
+          <legend class="rv-q__legend">What features of <span class="rv-nowrap">AgriDabaw-3D</span> do you enjoy the most?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></legend>
+          <p class="rv-hint rv-hint--top">Choose all that apply.</p>
+          <ul class="rv-checks" id="rvFeatures">
+            <li><label class="rv-check"><input type="checkbox" name="features" value="FARM_LAND"><span>Farm Land (Districts)</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="TUTORIAL"><span>Beginner Antonio Tutorial</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="DAILY_OBJECTIVES"><span>Daily Objectives Book</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="SHOP"><span>Item Farm Shop</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="AI_ADVISER"><span>AI Adviser Chatbox</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="MARKETPLACE"><span>Player Marketplace</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="TRADING"><span>In-Game Trading System</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="CHAT_FRIENDS"><span>Multiplayer Chatbox &amp; Friend List</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="features" value="NOTIFICATIONS"><span>Pest and Weather Notifications</span></label></li>
+            <li class="rv-check-other"><label class="rv-check"><input type="checkbox" name="features" value="OTHER" id="rvFeaturesOtherBox"><span>Other:</span></label><input class="rv-input rv-input--inline" type="text" id="rvFeaturesOther" maxlength="100" autocomplete="off" aria-label="Another feature you enjoy"></li>
+          </ul>
+          <p class="rv-error" id="rvFeaturesError" hidden></p>
+        </fieldset>
+
+        <fieldset class="rv-card rv-q reveal" id="rvWebRatingQ" aria-describedby="rvWebRatingError">
+          <legend class="rv-q__legend">How would you rate the design and visual appeal of the <span class="rv-nowrap">AgriDabaw-3D</span> website?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></legend>
+          <div class="rv-rate rv-rate--words" id="rvWebRate">
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">1</span><input type="radio" name="websiteRating" value="1" required><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="rv-rate__word">Very Poor</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">2</span><input type="radio" name="websiteRating" value="2"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="rv-rate__word">Poor</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">3</span><input type="radio" name="websiteRating" value="3"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="rv-rate__word">Fair</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">4</span><input type="radio" name="websiteRating" value="4"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="rv-rate__word">Good</span></label>
+            <label class="rv-rate__opt"><span class="rv-rate__n" aria-hidden="true">5</span><input type="radio" name="websiteRating" value="5"><svg class="rv-star" aria-hidden="true"><use href="#rv-star"/></svg><span class="rv-rate__word">Excellent</span></label>
+          </div>
+          <p class="rv-error" id="rvWebRatingError" hidden></p>
+        </fieldset>
+
+        <fieldset class="rv-card rv-q reveal" id="rvHardestQ" aria-describedby="rvHardestError">
+          <legend class="rv-q__legend">After exploring the website, which section was the hardest to understand or navigate?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></legend>
+          <p class="rv-hint rv-hint--top">Choose all that apply.</p>
+          <ul class="rv-checks" id="rvHardest">
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="ABOUT"><span>About</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="PROBLEM"><span>Problem</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="FEATURES"><span>Features</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="DISTRICTS"><span>Districts</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="AUDIENCE"><span>Who It's For</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="GALLERY"><span>Gallery</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="REVIEWS"><span>Reviews</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="DOWNLOAD"><span>Get the Game</span></label></li>
+            <li><label class="rv-check"><input type="checkbox" name="hardestSections" value="NONE" data-label="None — everything was easy"><span>None — Everything was easy to understand and navigate</span></label></li>
+            <li class="rv-check-other"><label class="rv-check"><input type="checkbox" name="hardestSections" value="OTHER" id="rvHardestOtherBox"><span>Other:</span></label><input class="rv-input rv-input--inline" type="text" id="rvHardestOther" maxlength="100" autocomplete="off" aria-label="Another section that was hard to understand or navigate"></li>
+          </ul>
+          <p class="rv-error" id="rvHardestError" hidden></p>
+        </fieldset>
+
+        <div class="rv-card rv-q reveal" id="rvChangeQ">
+          <label class="rv-q__label" for="rvChange">If you could change one thing about the <span class="rv-nowrap">AgriDabaw-3D</span> website, what would it be?&nbsp;<span class="rv-ask" aria-hidden="true">*</span></label>
+          <textarea class="rv-text" id="rvChange" name="websiteChange" rows="3" maxlength="1000" placeholder="Your answer" required aria-describedby="rvChangeError rvChangeCounter"></textarea>
+          <div class="rv-q__foot">
+            <p class="rv-error" id="rvChangeError" hidden></p>
+            <span class="rv-counter" id="rvChangeCounter">0 / 1000</span>
+          </div>
+        </div>
+
         <!-- Left empty by people; bots that fill every field are turned away. -->
         <div class="rv-hp" aria-hidden="true">
           <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
@@ -367,9 +444,58 @@
 
       <div class="rv-card rv-thanks" id="rvThanks" tabindex="-1" hidden>
         <h3>Thanks for your feedback!</h3>
-        <p>Your rating and comment are now posted below.</p>
+        <p>Your rating and comment are now posted below, and your answers are counted in the charts.</p>
         <button class="btn btn--line btn--sm" type="button" id="rvAgain">Submit another response</button>
       </div>
+    </div>
+
+    <!-- After the form in the page, so a phone shows the form before these; on
+         a wide screen the layout places them under the overall rating. -->
+    <div class="rv-charts">
+    <div class="rv-card rv-chart reveal" id="rvFeaturesChart">
+      <h3>Features players enjoy most</h3>
+      <p class="rv-chart__meta">Loading answers…</p>
+      <ol class="rv-hbars"></ol>
+      <details class="rv-others" hidden>
+        <summary>Other answers</summary>
+        <ul></ul>
+      </details>
+    </div>
+
+    <div class="rv-card rv-summary reveal" id="rvWebsiteChart">
+      <h3>Website design</h3>
+      <div class="rv-score">
+        <p class="rv-score__n is-empty">0.0</p>
+        <div class="rv-score__meta">
+          <span class="rv-avgstars" role="img" aria-label="No ratings yet">
+            <span class="rv-avgstars__row" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
+            <span class="rv-avgstars__row rv-avgstars__row--fill" aria-hidden="true"><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg><svg class="rv-star"><use href="#rv-star"/></svg></span>
+          </span>
+          <p class="rv-score__count">Loading ratings…</p>
+        </div>
+      </div>
+      <table class="rv-bars">
+        <caption class="sr-only">Number of website design ratings at each level</caption>
+        <tbody>
+          <tr class="rv-bar" data-stars="5" data-word="Excellent" tabindex="0"><th scope="row" class="rv-bar__label">5<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> Excellent</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="4" data-word="Good" tabindex="0"><th scope="row" class="rv-bar__label">4<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> Good</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="3" data-word="Fair" tabindex="0"><th scope="row" class="rv-bar__label">3<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> Fair</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="2" data-word="Poor" tabindex="0"><th scope="row" class="rv-bar__label">2<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> Poor</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+          <tr class="rv-bar" data-stars="1" data-word="Very Poor" tabindex="0"><th scope="row" class="rv-bar__label">1<svg class="rv-star is-on" aria-hidden="true"><use href="#rv-star"/></svg><span class="sr-only"> Very Poor</span></th><td class="rv-bar__plot" aria-hidden="true"><span class="rv-bar__track"><span class="rv-bar__fill"></span></span></td><td class="rv-bar__count">0</td></tr>
+        </tbody>
+      </table>
+      <div class="rv-tip" hidden></div>
+    </div>
+
+    <div class="rv-card rv-chart reveal" id="rvHardestChart">
+      <h3>Hardest section to understand</h3>
+      <p class="rv-chart__meta">Loading answers…</p>
+      <ol class="rv-hbars"></ol>
+      <details class="rv-others" hidden>
+        <summary>Other answers</summary>
+        <ul></ul>
+      </details>
+    </div>
     </div>
   </div>
 
@@ -421,6 +547,6 @@
 </div>
 
 <script src="assets/js/main.js"></script>
-<script src="assets/js/reviews.js?v=10"></script>
+<script src="assets/js/reviews.js?v=11"></script>
 </body>
 </html>

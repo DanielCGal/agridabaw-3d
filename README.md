@@ -18,11 +18,12 @@ Built by **GreenScape** — Daniel C. Galam and Jessica Mae G. Suello.
 ## What's in this repository
 
 ```
-index.html              The whole page — one document, fourteen sections
+index.html              The whole page — one document, fifteen sections
 assets/css/styles.css   All styling, including the tablet and phone breakpoints
 assets/js/main.js       Mobile nav, scroll reveal, nav highlighting, screenshot lightbox
-assets/js/reviews.js    Ratings and reviews: shows the overall rating and comments, sends new ones
-assets/img/             Game screenshots, logos, and two painted background images
+assets/js/reviews.js    Ratings and reviews: shows the ratings, charts and comments, sends new ones
+assets/img/             Game screenshots, logos, the trailer's poster, and two painted background images
+assets/video/           The promotional video shown in the trailer section
 .nojekyll               Tells GitHub Pages to serve the files as-is
 ```
 
@@ -74,21 +75,69 @@ still visible and the navigation links still work. A link that carries a
 fragment, such as `#about`, is re-aimed at its section once the page has
 finished loading, because the browser can otherwise leave it at the top.
 
+## The trailer
+
+The section under the hero plays `assets/video/agridabaw-3d-trailer.mp4` (1 minute
+41 seconds). The hero's **Watch the Trailer** button jumps to it. The video is
+only downloaded when a visitor presses play; until then the page shows
+`assets/img/trailer-poster.jpg`, the video's closing title card.
+
+The file in this repository is a web copy of the original 4K recording: 1080p,
+H.264, about 43 MB, with its index at the front so playback can start before the
+whole file has arrived. GitHub refuses files over 100 MB and warns above 50 MB,
+so a replacement video should be exported at 1080p and roughly 3.5 Mbps or less.
+
 ## Ratings and reviews
 
-Below the download section, visitors give their name, rate the game from 1 to 5
-stars and answer "What did you like about AgriDabaw-3D, and what improvements or
-suggestions would you recommend?", the same questions as the feedback form. The
-section shows the average rating, a bar for each star level, and every comment
-with its reviewer's name, newest first, ten at a time. Reviews sent before the
-name was asked for show as "Anonymous". The top menu's **Reviews** link jumps to
-the section.
+Below the download section, visitors answer seven questions, all required:
+
+1. Their name.
+2. A 1 to 5 star rating of the game.
+3. "What did you like about AgriDabaw-3D, and what improvements or suggestions
+   would you recommend?"
+4. Which features of the game they enjoy most (choose all that apply, with an
+   "Other" line).
+5. A 1 to 5 rating of the website's design and visual appeal (Very Poor to
+   Excellent).
+6. Which website section was hardest to understand or navigate (choose all that
+   apply; "None" cannot be combined with a section).
+7. One thing they would change about the website.
+
+Beside the form are four charts: the game's average rating with a bar per star
+level, the features chart, the website design rating, and the hardest-section
+chart. In the two choice charts a bar is the share of the people who answered
+that question who ticked that choice, most chosen first, and what people wrote
+beside "Other" is listed under the chart. Every comment is shown with its
+reviewer's name, newest first, ten at a time, followed by their answer to
+question 7. Reviews sent before a question existed simply have no answer for it;
+ones from before the name was asked for show as "Anonymous". The top menu's
+**Reviews** link jumps to the section.
 
 The reviews are stored by the game's own server (`agridabao-api` on Railway), whose
 address is in the section's `data-api` attribute:
 
-- `GET /api/reviews?page=0&size=10` returns the overall rating and a page of reviews.
-- `POST /api/reviews` with `{ "name": "Juan", "rating": 5, "comment": "..." }` adds one.
+- `GET /api/reviews?page=0&size=10` returns the overall rating (`summary`), the
+  counts behind the other three charts (`survey`) and a page of reviews.
+- `POST /api/reviews` adds one and returns the same `summary` and `survey`:
+
+```json
+{
+  "name": "Juan",
+  "rating": 5,
+  "comment": "...",
+  "features": ["AI_ADVISER", "OTHER"],
+  "featuresOther": "The night sky",
+  "websiteRating": 4,
+  "hardestSections": ["NONE"],
+  "hardestOther": "",
+  "websiteChange": "..."
+}
+```
+
+The choice codes are the `value` attributes of the form's checkboxes. To add or
+rename a choice, change it in `index.html` and in the server's list of accepted
+codes (`ReviewService` in `agridabao-api`); the charts read their rows from the
+form, so they follow by themselves.
 
 Reviews need no account; the name is whatever the reviewer types. The server only accepts them from this
 website's address, limits how many can be sent in an hour, and turns away bots
