@@ -18,7 +18,7 @@ Built by **GreenScape** — Daniel C. Galam and Jessica Mae G. Suello.
 ## What's in this repository
 
 ```
-index.html              The whole page — one document, fifteen sections
+index.html              The whole page — one document, sixteen sections
 assets/css/styles.css   All styling, including the tablet and phone breakpoints
 assets/js/main.js       Mobile nav, scroll reveal, nav highlighting, screenshot lightbox
 assets/js/reviews.js    Ratings and reviews: shows the ratings, charts and comments, sends new ones

@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=11">
+<link rel="stylesheet" href="assets/css/styles.css?v=12">
 
 <!-- Marks the page as scripted. The scroll-reveal animation and the phone menu
      only hide anything once this class is set, so if the script never loads the
@@ -92,7 +92,7 @@
   <div class="stats__inner">
     <div class="stat"><span class="stat__n">7</span><span class="stat__l">Davao districts</span></div>
     <div class="stat"><span class="stat__n">13</span><span class="stat__l">Crops to grow</span></div>
-    <div class="stat"><span class="stat__n">30</span><span class="stat__l">Pests &amp; diseases</span></div>
+    <div class="stat"><span class="stat__n">47</span><span class="stat__l">Pest &amp; disease cases</span></div>
     <div class="stat"><span class="stat__n">AI</span><span class="stat__l">Farming advisor</span></div>
     <div class="stat"><span class="stat__n">2</span><span class="stat__l">Climate events</span></div>
   </div>
@@ -172,7 +172,41 @@
     <li class="card reveal"><span class="card__icon" style="--ic:#E0921F" aria-hidden="true">🛒</span><h3>Buy, Sell, and Trade</h3><p>Manage resources, sell harvested crops at the shop, list items on the player marketplace, and trade with other players to develop critical thinking and resource-management skills.</p></li>
     <li class="card reveal"><span class="card__icon" style="--ic:#7FB3D5" aria-hidden="true">💬</span><h3>Connect Through Multiplayer</h3><p>Search for players, send friend requests, and chat with the friends you add to communicate, interact, and collaborate.</p></li>
     <li class="card reveal"><span class="card__icon" style="--ic:#4C7F3E" aria-hidden="true">🎯</span><h3>Complete Farming Objectives</h3><p>Take on farming tasks, track your progress, and work toward your goals.</p></li>
+    <li class="card reveal"><span class="card__icon" style="--ic:#8B5A2B" aria-hidden="true">🌱</span><h3>Prepare the Ground Your Crop Needs</h3><p>Till the soil, then dig a planting hole, build a raised bed or open a furrow. Start seeds in the Seedling Tent and transplant them when they are ready.</p></li>
+    <li class="card reveal"><span class="card__icon" style="--ic:#2E5A29" aria-hidden="true">📴</span><h3>Play Offline Farmlands</h3><p>Create named farmlands that are saved on your phone. No account and no internet needed — plant, harvest, shop and face the weather wherever you are.</p></li>
+    <li class="card reveal"><span class="card__icon" style="--ic:#F2B544" aria-hidden="true">📖</span><h3>Look It Up in the Almanac</h3><p>All 58 items in the game — tools, planting materials, harvests, sprays, traps and kits — each with its picture, what it is for and how to use it.</p></li>
   </ul>
+</section>
+
+<!-- ================= OFFLINE FARMLANDS + ALMANAC ================= -->
+<section class="section section--cream" id="offline">
+  <div class="split">
+    <div class="split__copy reveal">
+      <p class="eyebrow">New in version 10</p>
+      <h2>Farm anywhere. Look anything up.</h2>
+      <p><strong>Offline Farmlands.</strong> Name a farmland, pick its district and start farming with no account and no signal. Each one is saved on your device with its own picture, and you can keep several beside your online farmland.</p>
+      <p><strong>Item Almanac.</strong> Not sure what cures a pest, or which ground a seed wants? Open the scroll button on your farm and tap any item to see what it looks like, what it is for and how to use it — online or offline.</p>
+
+      <p class="chips__label">Works on an offline farmland</p>
+      <ul class="chips">
+        <li class="chip chip--gold">Planting &amp; harvest</li><li class="chip chip--gold">Seedling Tent</li>
+        <li class="chip chip--gold">Shop</li><li class="chip chip--gold">Daily objectives</li>
+        <li class="chip chip--gold">Weather, pests &amp; diseases</li><li class="chip chip--gold">Almanac</li>
+        <li class="chip chip--gold">Antonio's tutorial</li>
+      </ul>
+
+      <p class="chips__label">Needs an online farmland</p>
+      <ul class="chips">
+        <li class="chip">AI Advisor</li><li class="chip">Antonio Objectives</li>
+        <li class="chip">Friends &amp; chat</li><li class="chip">Trading</li>
+        <li class="chip">Player marketplace</li>
+      </ul>
+    </div>
+    <div class="split__media reveal">
+      <img src="assets/img/shot-farmlands.jpg" alt="The Select Farmland screen listing one online farmland and three offline farmlands, each with its district and last save date" width="1010" height="568" loading="lazy">
+      <img src="assets/img/shot-almanac.jpg" alt="The Item Almanac open on the Shovel, showing its picture, what it is for and how to use it" width="1010" height="569" loading="lazy">
+    </div>
+  </div>
 </section>
 
 <!-- ================= DISTRICTS ================= -->
@@ -224,7 +258,7 @@
       </figure>
       <figure class="shot reveal">
         <img src="assets/img/shot-pest.jpg" alt="A pest and disease event alert reporting Coconut Brontispa on a coconut crop with its current severity" width="1016" height="565" loading="lazy">
-        <figcaption><strong>Pests &amp; diseases</strong> Thirty Davao pests and diseases across forty-seven crop-specific cases, each with its own season, its own severity curve and its own correct treatment.</figcaption>
+        <figcaption><strong>Pests &amp; diseases</strong> Forty-seven pest and disease cases across all thirteen crops — 27 pests and 20 diseases, 32 by name — each with its own season, its own severity curve and its own correct treatment.</figcaption>
       </figure>
     </div>
   </div>
@@ -268,6 +302,9 @@
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-chat.jpg" alt="The in-game chat window with messages exchanged between two friends" width="1012" height="573" loading="lazy"><span>Chat with friends</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-shop.jpg" alt="The in-game shop after buying seeds and tools" width="1013" height="566" loading="lazy"><span>Buy seeds and tools</span></button></li>
     <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-mainmenu.jpg" alt="The AgriDabaw-3D main menu over a painted Davao landscape" width="1013" height="570" loading="lazy"><span>Main menu</span></button></li>
+    <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-farmlands.jpg" alt="The Select Farmland screen with one online farmland and three offline farmlands" width="1010" height="568" loading="lazy"><span>Online and offline farmlands</span></button></li>
+    <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-almanac.jpg" alt="The Item Almanac showing the Shovel with its description and how to use it" width="1010" height="569" loading="lazy"><span>Item Almanac</span></button></li>
+    <li class="reveal"><button class="gal" type="button"><img src="assets/img/shot-ground.jpg" alt="A raised bed with a newly planted crop and a furrow behind it" width="1010" height="568" loading="lazy"><span>Raised beds and furrows</span></button></li>
   </ul>
 </section>
 
@@ -297,7 +334,7 @@
 
   <div class="download reveal">
     <a class="btn btn--gold btn--lg" id="apkLink" href="https://github.com/DanielCGal/agridabaw-3d/releases/download/v9/AgriDabaw-3D-v9.apk">Download AgriDabaw-3D for Android</a>
-    <p class="download__note">Version 9 &nbsp;·&nbsp; Android APK &nbsp;·&nbsp; about 407 MB. The website itself works on any laptop, desktop, tablet or phone browser — the game installs on Android.</p>
+    <p class="download__note">Version 9 &nbsp;·&nbsp; Android APK &nbsp;·&nbsp; about 407 MB. The website itself works on any laptop, desktop, tablet or phone browser — the game installs on Android. Offline Farmlands and the Item Almanac arrive with version 10.</p>
   </div>
 </section>
 

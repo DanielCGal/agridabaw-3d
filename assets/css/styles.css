@@ -242,11 +242,19 @@ p.lead.on-dark{color:var(--cream)}
   background:rgba(255,255,255,.14); color:var(--cream); border:1.5px solid rgba(247,235,211,.4);
 }
 .chip--gold{background:var(--gold); color:var(--wood-deep); border-color:transparent}
+/* Chips on a light section: the default chip is drawn for the dark green band. */
+.section--cream .chips__label{color:var(--wood-mid)}
+.section--cream .chip:not(.chip--gold){
+  background:rgba(74,46,22,.07); color:var(--wood-deep); border-color:rgba(74,46,22,.28);
+}
 
 /* ---------------- Challenges band ---------------- */
 .challenges{position:relative; isolation:isolate; overflow:hidden}
+/* max-width and margin are reset here: ".section > *" caps every direct child
+   at the content width, which on a wide screen shrank this background to a
+   centred column and left the page colour showing on both sides. */
 .challenges__bg{
-  position:absolute; inset:0; z-index:-1;
+  position:absolute; inset:0; z-index:-1; max-width:none; margin:0;
   background:
     linear-gradient(180deg, rgba(18,26,34,.80) 0%, rgba(20,32,26,.88) 100%),
     url("../img/bg-storm.jpg") center/cover no-repeat;
