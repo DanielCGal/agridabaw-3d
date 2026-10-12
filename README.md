@@ -77,15 +77,18 @@ finished loading, because the browser can otherwise leave it at the top.
 
 ## The trailer
 
-The section under the hero plays `assets/video/agridabaw-3d-trailer.mp4` (1 minute
-41 seconds). The hero's **Watch the Trailer** button jumps to it. The video is
+The section under the hero plays `assets/video/agridabaw-3d-trailer.mp4` (2 minutes
+26 seconds). The hero's **Watch the Trailer** button jumps to it. The video is
 only downloaded when a visitor presses play; until then the page shows
 `assets/img/trailer-poster.jpg`, the video's closing title card.
 
-The file in this repository is a web copy of the original 4K recording: 1080p,
-H.264, about 43 MB, with its index at the front so playback can start before the
-whole file has arrived. GitHub refuses files over 100 MB and warns above 50 MB,
-so a replacement video should be exported at 1080p and roughly 3.5 Mbps or less.
+The file in this repository is a web copy of the original recording (1080p at
+20 Mbps, 366 MB): still 1080p and H.264, but about 61 MB, with its index at the
+front so playback can start before the whole file has arrived. GitHub refuses
+files over 100 MB and warns above 50 MB, so a replacement video should be
+exported at 1080p and roughly 3.5 Mbps or less. When the video or its poster is
+replaced, raise the `?v=` number on both addresses in `index.html` so returning
+visitors are not shown the old copy.
 
 ## Ratings and reviews
 
