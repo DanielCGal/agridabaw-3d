@@ -154,16 +154,16 @@ computer, never on the live site.
 
 ## The game download
 
-The APK is about 407 MB, which is far beyond GitHub's 100 MB per-file limit for
+The APK is about 408 MB, which is far beyond GitHub's 100 MB per-file limit for
 repository contents, so it is published as a **GitHub Release asset** instead. The
 download button points at the release for that exact version:
 
 ```
-https://github.com/DanielCGal/agridabaw-3d/releases/download/v9/AgriDabaw-3D-v9.apk
+https://github.com/DanielCGal/agridabaw-3d/releases/download/v12/AgriDabaw-3D-v12.apk
 ```
 
 To publish a new version: create a GitHub Release with a new tag (for example
-`v10`), attach the APK named to match (`AgriDabaw-3D-v10.apk`), then update the link,
+`v13`), attach the APK named to match (`AgriDabaw-3D-v13.apk`), then update the link,
 the version and the download size in the download section of `index.html`.
 Because each link names its own release, an older release can never break it.
 
